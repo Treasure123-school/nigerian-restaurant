@@ -6,26 +6,28 @@ import { SiteSettings } from "../types"
 import { useFeaturedItems } from "../features/menu/useMenuItems"
 import { MenuGrid } from "../components/menu/MenuGrid"
 import { Button } from "../components/ui/Button"
-import { Spinner } from "../components/ui/Spinner"
+import { DEMO_SETTINGS, isSanityConfigured } from "../lib/demoData"
 
 export function HomePage() {
-  const { data: settings, isLoading: isSettingsLoading } = useQuery<SiteSettings>({
+  const { data: fetchedSettings, isLoading: isSettingsLoading } = useQuery<SiteSettings>({
     queryKey: ['siteSettings'],
-    queryFn: () => sanityClient.fetch(SITE_SETTINGS)
+    queryFn: () => {
+      if (!isSanityConfigured()) return Promise.resolve(DEMO_SETTINGS)
+      return sanityClient.fetch(SITE_SETTINGS)
+    },
   })
-  
-  const { data: featuredItems, isLoading: isFeaturedLoading } = useFeaturedItems()
 
-  if (isSettingsLoading) return <Spinner />
+  const settings = fetchedSettings ?? DEMO_SETTINGS
+  const { data: featuredItems, isLoading: isFeaturedLoading } = useFeaturedItems()
 
   return (
     <div className="w-full">
       {/* Hero Section */}
       <section className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center pt-16">
-        {settings?.heroImage ? (
+        {settings?.heroImage?.asset?._ref ? (
           <div className="absolute inset-0 z-0">
-            <img 
-              src={urlFor(settings.heroImage).width(1920).height(1080).url()} 
+            <img
+              src={urlFor(settings.heroImage).width(1920).height(1080).url()}
               alt={settings.heroHeadline}
               className="w-full h-full object-cover"
             />
@@ -34,13 +36,13 @@ export function HomePage() {
         ) : (
           <div className="absolute inset-0 z-0 bg-secondary/90" />
         )}
-        
+
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto space-y-6">
           <h1 className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
-            {settings?.heroHeadline || "Authentic Nigerian Cuisine"}
+            {isSettingsLoading ? "Authentic Nigerian Cuisine" : (settings?.heroHeadline || "Authentic Nigerian Cuisine")}
           </h1>
           <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto">
-            {settings?.heroSubtext || "Experience the rich and vibrant flavors of Nigeria, delivered straight to your door."}
+            {isSettingsLoading ? "Experience the rich and vibrant flavors of Nigeria, delivered straight to your door." : (settings?.heroSubtext || "Experience the rich and vibrant flavors of Nigeria, delivered straight to your door.")}
           </p>
           <div className="pt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/menu">
@@ -73,11 +75,11 @@ export function HomePage() {
               <h3 className="font-bold text-xl mb-4 text-secondary">Location</h3>
               <p className="text-gray-600 mb-6">{settings?.address}</p>
               {settings?.whatsappNumber && (
-                <a 
+                <a
                   href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}`}
                   target="_blank" rel="noreferrer"
                 >
-                   <Button variant="primary" className="w-full">Order via WhatsApp</Button>
+                  <Button variant="primary" className="w-full">Order via WhatsApp</Button>
                 </a>
               )}
             </div>
