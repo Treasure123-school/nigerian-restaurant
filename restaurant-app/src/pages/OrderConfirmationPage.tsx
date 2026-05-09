@@ -1,8 +1,8 @@
 import { useLocation, useNavigate, Navigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { sanityClient } from "../../lib/sanityClient"
-import { SITE_SETTINGS } from "../../lib/queries"
-import { SiteSettings } from "../../types"
+import { sanityClient } from "../lib/sanityClient"
+import { SITE_SETTINGS } from "../lib/queries"
+import { SiteSettings } from "../types"
 import { Button } from "../components/ui/Button"
 import { CheckCircle2 } from "lucide-react"
 

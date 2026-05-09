@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { sanityClient, urlFor } from "../../lib/sanityClient"
-import { SITE_SETTINGS } from "../../lib/queries"
-import { SiteSettings } from "../../types"
-import { useFeaturedItems } from "../../features/menu/useMenuItems"
-import { MenuGrid } from "../../components/menu/MenuGrid"
-import { Button } from "../../components/ui/Button"
-import { Spinner } from "../../components/ui/Spinner"
+import { sanityClient, urlFor } from "../lib/sanityClient"
+import { SITE_SETTINGS } from "../lib/queries"
+import { SiteSettings } from "../types"
+import { useFeaturedItems } from "../features/menu/useMenuItems"
+import { MenuGrid } from "../components/menu/MenuGrid"
+import { Button } from "../components/ui/Button"
+import { Spinner } from "../components/ui/Spinner"
 
 export function HomePage() {
   const { data: settings, isLoading: isSettingsLoading } = useQuery<SiteSettings>({

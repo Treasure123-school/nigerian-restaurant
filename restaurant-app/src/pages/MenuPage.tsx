@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { useCategories } from "../../features/menu/useCategories"
-import { useMenuItems } from "../../features/menu/useMenuItems"
-import { MenuGrid } from "../../components/menu/MenuGrid"
-import { CategoryFilter } from "../../components/menu/CategoryFilter"
+import { useCategories } from "../features/menu/useCategories"
+import { useMenuItems } from "../features/menu/useMenuItems"
+import { MenuGrid } from "../components/menu/MenuGrid"
+import { CategoryFilter } from "../components/menu/CategoryFilter"
 
 export function MenuPage() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
