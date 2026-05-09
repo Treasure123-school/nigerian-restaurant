@@ -40,11 +40,6 @@ export function MenuCard({ item }: { item: MenuItem }) {
           <Button onClick={() => addItem(item, false)} className="w-full shadow-sm hover:shadow-md" variant="primary">
             Add to Cart
           </Button>
-          {item.extraPortionPrice && (
-            <Button onClick={() => addItem(item, true)} className="w-full" variant="outline">
-              Extra Portion ({formatPrice(item.extraPortionPrice)})
-            </Button>
-          )}
         </div>
       </div>
     </div>
