@@ -5,19 +5,24 @@ import { Button } from "../ui/Button"
 import { Badge } from "../ui/Badge"
 import { useCartStore } from "../../features/cart/cartStore"
 
+const FOOD_PLACEHOLDER = "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&h=450&fit=crop&auto=format"
+
 export function MenuCard({ item }: { item: MenuItem }) {
   const { addItem } = useCartStore()
+
+  const hasRealImage = item.image?.asset?._ref && item.image.asset._ref !== ''
+  const imageSrc = hasRealImage
+    ? urlFor(item.image).width(600).height(450).url()
+    : FOOD_PLACEHOLDER
 
   return (
     <div className="group rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full">
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
-        {item.image && (
-          <img 
-            src={urlFor(item.image).width(600).height(450).url()} 
-            alt={item.image.alt || item.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        )}
+        <img
+          src={imageSrc}
+          alt={item.image?.alt || item.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
         <div className="absolute top-3 left-3 flex gap-2">
           {item.isFeatured && <Badge className="bg-accent text-white shadow-sm">Featured</Badge>}
           {item.tags?.map((tag) => <Badge key={tag} className="bg-white/90 text-text shadow-sm">{tag}</Badge>)}
