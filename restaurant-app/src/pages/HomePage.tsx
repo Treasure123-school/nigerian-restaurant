@@ -147,9 +147,14 @@ export function HomePage() {
 
       {/* ── Perks ── */}
       <section className="bg-[#FFF8EE] border-y border-orange-100">
+        <div className="text-center pt-12 px-4">
+          <SectionLabel>Why Choose Us</SectionLabel>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-2">Our Promise to You</h2>
+          <p className="text-gray-500 text-sm max-w-md mx-auto mb-8 leading-relaxed">Everything we do is rooted in quality, tradition, and a deep love for Nigerian food culture.</p>
+        </div>
         <div
           ref={perksRef}
-          className="reveal-stagger container mx-auto max-w-5xl px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-0"
+          className="reveal-stagger container mx-auto max-w-5xl px-4 pb-12 grid grid-cols-2 md:grid-cols-4 gap-0"
         >
           {PERKS.map(({ icon: Icon, label, desc }) => (
             <div key={label} className="flex flex-col items-center text-center px-6 py-6 gap-3">

@@ -26,9 +26,10 @@ export function Navbar() {
   useEffect(() => { setMobileOpen(false) }, [location.pathname])
 
   const links = [
-    { to: "/",        label: "Home" },
-    { to: "/menu",    label: "Menu" },
-    { to: "/contact", label: "Contact" },
+    { to: "/",          label: "Home" },
+    { to: "/menu",      label: "Menu" },
+    { to: "/services",  label: "Services" },
+    { to: "/contact",   label: "Contact" },
   ]
 
   return (
