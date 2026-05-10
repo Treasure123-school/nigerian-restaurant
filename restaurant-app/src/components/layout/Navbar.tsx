@@ -102,8 +102,8 @@ export function Navbar() {
               </button>
             </div>
 
-            {/* Nav links — centered vertically in remaining space */}
-            <div className="flex-1 flex flex-col justify-center px-6 gap-3">
+            {/* Nav links — start from the top */}
+            <div className="flex-1 flex flex-col justify-start px-6 pt-8 gap-3">
               {links.map(({ to, label }) => (
                 <Link
                   key={to}
