@@ -21,15 +21,18 @@ export function useMenuItems(categorySlug?: string | null) {
         } else {
           results = await sanityClient.fetch(ALL_MENU_ITEMS)
         }
+        console.log('[Sanity] menuItems result:', results)
         // Fallback to demo data if CMS has no content yet
         if (!results || results.length === 0) {
+          console.warn('[Sanity] No menu items returned — using demo data')
           if (categorySlug) {
             return DEMO_MENU_ITEMS.filter(i => i.category.slug.current === categorySlug)
           }
           return DEMO_MENU_ITEMS
         }
         return results
-      } catch {
+      } catch (err) {
+        console.error('[Sanity] menuItems fetch error:', err)
         if (categorySlug) {
           return DEMO_MENU_ITEMS.filter(i => i.category.slug.current === categorySlug)
         }
