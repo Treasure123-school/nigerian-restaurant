@@ -14,20 +14,24 @@ export function CartDrawer() {
 
   return (
     <Fragment>
-      {/* Backdrop */}
-      <div 
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity"
+      <div
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 transition-opacity"
         onClick={closeDrawer}
       />
-      
-      {/* Drawer */}
-      <div className="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-white shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
-        <div className="flex items-center justify-between p-4 border-b">
-          <div className="flex items-center gap-2 text-lg font-bold text-text">
+
+      <div className="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-white shadow-2xl flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b bg-white">
+          <div className="flex items-center gap-2.5">
             <ShoppingBag className="w-5 h-5 text-primary" />
-            Your Cart
+            <span className="text-lg font-bold text-text">Your Cart</span>
+            {items.length > 0 && (
+              <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                {items.reduce((t, i) => t + i.quantity, 0)}
+              </span>
+            )}
           </div>
-          <button 
+          <button
             onClick={closeDrawer}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
@@ -35,55 +39,54 @@ export function CartDrawer() {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 flex flex-col">
+        {/* Body */}
+        <div className="flex-1 overflow-y-auto">
           {items.length === 0 ? (
-            <div className="m-auto flex flex-col items-center justify-center text-center opacity-70">
-              <ShoppingBag className="w-16 h-16 text-gray-300 mb-4" />
-              <p className="font-medium text-gray-500 mb-6">Your cart is empty</p>
-              <Button onClick={() => {
-                closeDrawer()
-                navigate("/menu")
-              }} variant="outline">
+            <div className="h-full flex flex-col items-center justify-center text-center px-6 py-12 opacity-80">
+              <div className="w-20 h-20 rounded-full bg-orange-50 flex items-center justify-center mb-4">
+                <ShoppingBag className="w-9 h-9 text-primary/40" />
+              </div>
+              <p className="font-semibold text-gray-600 mb-1">Your cart is empty</p>
+              <p className="text-sm text-gray-400 mb-6">Add some delicious dishes to get started</p>
+              <Button
+                onClick={() => { closeDrawer(); navigate("/menu") }}
+                variant="outline"
+                className="border-secondary text-secondary hover:bg-secondary hover:text-white"
+              >
                 Browse Menu
               </Button>
             </div>
           ) : (
-            <div className="flex-1 flex flex-col">
-              <div className="flex-1">
-                {items.map((item) => (
-                  <CartItem key={`${item.menuItem._id}-${item.isExtraPortion}`} item={item} />
-                ))}
-              </div>
-              <div className="mt-6 border-t pt-4 bg-white sticky bottom-0 border-t-gray-100 pb-safe">
-                <div className="flex justify-between items-center mb-4 text-lg">
-                  <span className="font-medium">Total</span>
-                  <span className="font-bold text-primary text-xl max-w-[200px] text-right break-words">{formatPrice(getTotalPrice())}</span>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Button 
-                    className="w-full text-base font-medium py-6"
-                    onClick={() => {
-                      closeDrawer()
-                      navigate("/checkout")
-                    }}
-                  >
-                    Proceed to Checkout
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    className="w-full text-sm"
-                    onClick={() => {
-                      closeDrawer()
-                      navigate("/menu")
-                    }}
-                  >
-                    Continue Shopping
-                  </Button>
-                </div>
-              </div>
+            <div className="px-5 divide-y">
+              {items.map((item) => (
+                <CartItem key={`${item.menuItem._id}-${item.isExtraPortion}`} item={item} />
+              ))}
             </div>
           )}
         </div>
+
+        {/* Footer */}
+        {items.length > 0 && (
+          <div className="border-t px-5 py-5 bg-white space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-gray-500 text-sm">Subtotal</span>
+              <span className="font-bold text-xl text-primary">{formatPrice(getTotalPrice())}</span>
+            </div>
+            <Button
+              className="w-full py-6 text-base font-semibold shadow-lg shadow-primary/20"
+              onClick={() => { closeDrawer(); navigate("/checkout") }}
+            >
+              Proceed to Checkout
+            </Button>
+            <Button
+              variant="ghost"
+              className="w-full text-sm text-gray-500"
+              onClick={() => { closeDrawer(); navigate("/menu") }}
+            >
+              Continue Shopping
+            </Button>
+          </div>
+        )}
       </div>
     </Fragment>
   )
