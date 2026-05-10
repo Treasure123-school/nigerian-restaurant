@@ -30,7 +30,6 @@ export function useMenuItems(categorySlug?: string | null) {
         }
         return results
       } catch {
-        // CORS, network or auth error — use demo data
         if (categorySlug) {
           return DEMO_MENU_ITEMS.filter(i => i.category.slug.current === categorySlug)
         }
