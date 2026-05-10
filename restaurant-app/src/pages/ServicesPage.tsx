@@ -8,6 +8,8 @@ import { SITE_SETTINGS } from "../lib/queries"
 import { SiteSettings } from "../types"
 import { DEMO_SETTINGS, isSanityConfigured } from "../lib/demoData"
 
+const SERVICES_HEADER_IMAGE = "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&h=600&fit=crop&auto=format"
+
 const SERVICES = [
   {
     icon: UtensilsCrossed,
@@ -85,14 +87,16 @@ export function ServicesPage() {
     <div className="w-full bg-white flex flex-col" style={{ minHeight: "calc(100vh - 64px)" }}>
 
       {/* Header */}
-      <div className="relative bg-secondary text-white py-24 px-4 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{ backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`, backgroundSize: "32px 32px" }}
-        />
-        <div ref={headRef} className="reveal relative z-10 container mx-auto max-w-4xl text-center space-y-3">
-          <p className="text-accent text-xs font-semibold uppercase tracking-[0.2em]">What We Offer</p>
-          <h1 className="text-5xl md:text-6xl font-serif font-bold text-white">Our Services</h1>
+      <div className="relative text-white overflow-hidden" style={{ minHeight: 320 }}>
+        <img src={SERVICES_HEADER_IMAGE} alt="Our services" className="absolute inset-0 w-full h-full object-cover scale-105" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1a3828]/85 via-black/60 to-black/50" />
+        <div ref={headRef} className="reveal relative z-10 container mx-auto max-w-4xl px-4 py-24 text-center space-y-4">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <span className="h-px w-8 bg-accent/50" />
+            <span className="text-accent text-xs font-bold uppercase tracking-[0.2em]">What We Offer</span>
+            <span className="h-px w-8 bg-accent/50" />
+          </div>
+          <h1 className="text-5xl md:text-7xl font-serif font-bold text-white drop-shadow-xl">Our Services</h1>
           <p className="text-white/60 max-w-md mx-auto font-light leading-relaxed">
             From dine-in to doorstep delivery and full event catering — we make authentic Nigerian cuisine accessible your way.
           </p>

@@ -7,6 +7,8 @@ import { MapPin, Clock, MessageCircle, Instagram, Facebook, Twitter } from "luci
 import { Button } from "../components/ui/Button"
 import { useScrollReveal } from "../hooks/useScrollReveal"
 
+const CONTACT_HEADER_IMAGE = "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&h=600&fit=crop&auto=format"
+
 export function ContactPage() {
   const { data: settings } = useQuery<SiteSettings>({
     queryKey: ["siteSettings"],
@@ -29,14 +31,16 @@ export function ContactPage() {
     <div className="w-full bg-white flex flex-col" style={{ minHeight: "calc(100vh - 64px)" }}>
 
       {/* Header */}
-      <div className="relative bg-secondary text-white py-24 px-4 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{ backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`, backgroundSize: "32px 32px" }}
-        />
-        <div ref={headRef} className="reveal relative z-10 container mx-auto max-w-4xl text-center space-y-3">
-          <p className="text-accent text-xs font-semibold uppercase tracking-[0.2em]">Get in Touch</p>
-          <h1 className="text-5xl md:text-6xl font-serif font-bold text-white">Contact Us</h1>
+      <div className="relative text-white overflow-hidden" style={{ minHeight: 320 }}>
+        <img src={CONTACT_HEADER_IMAGE} alt="Contact us" className="absolute inset-0 w-full h-full object-cover scale-105" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1a3828]/85 via-black/60 to-black/50" />
+        <div ref={headRef} className="reveal relative z-10 container mx-auto max-w-4xl px-4 py-24 text-center space-y-4">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <span className="h-px w-8 bg-accent/50" />
+            <span className="text-accent text-xs font-bold uppercase tracking-[0.2em]">Get in Touch</span>
+            <span className="h-px w-8 bg-accent/50" />
+          </div>
+          <h1 className="text-5xl md:text-7xl font-serif font-bold text-white drop-shadow-xl">Contact Us</h1>
           <p className="text-white/60 max-w-md mx-auto font-light leading-relaxed">
             Reach out for reservations, orders, or any questions — we respond quickly.
           </p>
