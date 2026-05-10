@@ -149,7 +149,7 @@ export function HomePage() {
       <section className="bg-[#FFF8EE] border-y border-orange-100">
         <div
           ref={perksRef}
-          className="reveal-stagger container mx-auto max-w-5xl px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-orange-100"
+          className="reveal-stagger container mx-auto max-w-5xl px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-0"
         >
           {PERKS.map(({ icon: Icon, label, desc }) => (
             <div key={label} className="flex flex-col items-center text-center px-6 py-6 gap-3">
@@ -165,7 +165,7 @@ export function HomePage() {
 
       {/* ── Stats ── */}
       <section className="bg-[#1a3828] py-20 px-4">
-        <div ref={statsRef} className="reveal-stagger container mx-auto max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-0 text-center divide-x divide-white/10">
+        <div ref={statsRef} className="reveal-stagger container mx-auto max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-0 text-center">
           {STATS.map(({ value, suffix, label }) => (
             <div key={label} className="px-8 py-6">
               <p className="font-serif text-5xl md:text-6xl font-bold text-accent leading-none">
