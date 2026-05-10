@@ -160,7 +160,7 @@ export function LocationsSection() {
               <div
                 key={branch.id}
                 className={cn(
-                  "rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 bg-white cursor-pointer",
+                  "group rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 bg-white cursor-pointer",
                   isNearest
                     ? "border-primary ring-1 ring-primary/20 shadow-md hover:-translate-y-1 hover:shadow-lg"
                     : "border-gray-100 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)]"
@@ -171,7 +171,7 @@ export function LocationsSection() {
                   <img
                     src={branch.image}
                     alt={branch.name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   <div className="absolute bottom-3 left-3">
