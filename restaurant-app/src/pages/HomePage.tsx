@@ -10,6 +10,7 @@ import { Spinner } from "../components/ui/Spinner"
 import { DEMO_SETTINGS, isSanityConfigured } from "../lib/demoData"
 import { Leaf, Clock, Star, MapPin, MessageCircle, Quote } from "lucide-react"
 import { useScrollReveal } from "../hooks/useScrollReveal"
+import { LocationsSection } from "../components/locations/LocationsSection"
 
 const HERO_IMAGE   = "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&h=1080&fit=crop&auto=format"
 const ABOUT_IMAGE  = "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&h=700&fit=crop&auto=format"
@@ -234,6 +235,9 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── Locations ── */}
+      <LocationsSection />
 
       {/* ── Visit Us ── */}
       <section className="py-20 bg-gray-50 px-4">
