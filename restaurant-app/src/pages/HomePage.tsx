@@ -103,7 +103,7 @@ export function HomePage() {
           <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0d1f13]/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in">
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in pb-28">
           {/* Pill badge */}
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold px-4 py-2 rounded-full mb-8 tracking-wide">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
