@@ -7,7 +7,7 @@ import { useFeaturedItems } from "../features/menu/useMenuItems"
 import { MenuGrid } from "../components/menu/MenuGrid"
 import { Button } from "../components/ui/Button"
 import { DEMO_SETTINGS, isSanityConfigured } from "../lib/demoData"
-import { Leaf, Clock, Star, MessageCircle, Quote, ChefHat } from "lucide-react"
+import { Leaf, Clock, Star, MessageCircle, Quote, ChefHat, ChevronDown } from "lucide-react"
 import { useScrollReveal } from "../hooks/useScrollReveal"
 import { LocationsSection } from "../components/locations/LocationsSection"
 
@@ -116,26 +116,24 @@ export function HomePage() {
             {settings?.heroSubtext || "Experience the rich and vibrant flavours of Nigeria, made fresh daily with traditional recipes passed down through generations."}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-16 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/menu">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-semibold px-10 py-4 rounded-full shadow-2xl shadow-primary/40 text-base w-48">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-semibold px-10 py-4 rounded-full shadow-2xl shadow-primary/40 text-base">
                 Order Now
               </Button>
             </Link>
             {settings?.whatsappNumber && (
               <a href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, "")}`} target="_blank" rel="noreferrer">
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-full px-8 py-4 text-base font-light w-48">
+                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-full px-8 py-4 text-base font-light">
                   WhatsApp Order
                 </Button>
               </a>
             )}
           </div>
-        </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-bounce flex flex-col items-center gap-1">
-          <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-1.5">
-            <div className="w-1 h-2 bg-white/60 rounded-full animate-bounce" />
+          {/* Scroll indicator */}
+          <div className="mt-12 flex justify-center animate-bounce">
+            <ChevronDown className="w-6 h-6 text-white/50" />
           </div>
         </div>
       </section>
