@@ -6,7 +6,6 @@ import { SiteSettings } from "../types"
 import { useFeaturedItems } from "../features/menu/useMenuItems"
 import { MenuGrid } from "../components/menu/MenuGrid"
 import { Button } from "../components/ui/Button"
-import { Spinner } from "../components/ui/Spinner"
 import { DEMO_SETTINGS, isSanityConfigured } from "../lib/demoData"
 import { Leaf, Clock, Star, MessageCircle, Quote, ChefHat } from "lucide-react"
 import { useScrollReveal } from "../hooks/useScrollReveal"
@@ -110,16 +109,12 @@ export function HomePage() {
             Now Open · Victoria Island, Lagos
           </div>
 
-          {isSettingsLoading ? <Spinner /> : (
-            <>
-              <h1 className="text-5xl sm:text-6xl md:text-8xl font-serif font-bold text-white leading-[1.05] mb-6 drop-shadow-2xl">
-                {settings?.heroHeadline || "Authentic Nigerian Cuisine"}
-              </h1>
-              <p className="text-lg md:text-xl text-white/70 max-w-xl mx-auto leading-relaxed mb-10 font-light">
-                {settings?.heroSubtext || "Experience the rich and vibrant flavors of Nigeria, made fresh daily with love."}
-              </p>
-            </>
-          )}
+          <h1 className="text-5xl sm:text-6xl md:text-8xl font-serif font-bold text-white leading-[1.05] mb-6 drop-shadow-2xl">
+            {settings?.heroHeadline || "Authentic Nigerian Cuisine"}
+          </h1>
+          <p className="text-lg md:text-xl text-white/70 max-w-xl mx-auto leading-relaxed mb-10 font-light">
+            {settings?.heroSubtext || "Experience the rich and vibrant flavours of Nigeria, made fresh daily with traditional recipes passed down through generations."}
+          </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/menu">
