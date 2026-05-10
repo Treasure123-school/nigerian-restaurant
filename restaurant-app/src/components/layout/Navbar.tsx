@@ -69,12 +69,13 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <button
               onClick={openDrawer}
-              className="relative p-2.5 hover:bg-orange-50 rounded-full transition-colors"
+              className="relative flex items-center gap-2 pl-3 pr-4 py-2 bg-primary hover:bg-primary/90 active:scale-95 rounded-full transition-all duration-200 shadow-sm hover:shadow-md group"
               aria-label="Open cart"
             >
-              <ShoppingCart className="w-5 h-5 text-gray-700" />
+              <ShoppingCart className="w-4 h-4 text-white" />
+              <span className="text-white text-sm font-semibold hidden sm:inline">Cart</span>
               {totalItems > 0 && (
-                <span className="absolute top-0.5 right-0.5 flex items-center justify-center bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full">
+                <span className="flex items-center justify-center bg-white text-primary text-[10px] font-bold w-4 h-4 rounded-full ring-1 ring-primary/20">
                   {totalItems > 9 ? "9+" : totalItems}
                 </span>
               )}
