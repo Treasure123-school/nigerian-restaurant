@@ -72,16 +72,17 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 export function AboutPage() {
-  const heroRef      = useScrollReveal()
-  const missionRef   = useScrollReveal()
-  const statsRef     = useScrollReveal()
-  const valuesRef    = useScrollReveal()
-  const storyImgRef  = useScrollReveal()
-  const storyTxtRef  = useScrollReveal()
-  const teamImgRef   = useScrollReveal()
-  const teamTxtRef   = useScrollReveal()
-  const timelineRef  = useScrollReveal()
-  const ctaRef       = useScrollReveal()
+  const missionRef     = useScrollReveal()
+  const statsRef       = useScrollReveal()
+  const valuesRef      = useScrollReveal()
+  const storyImgRef    = useScrollReveal()
+  const storyTxtRef    = useScrollReveal()
+  const teamTxtRef     = useScrollReveal()
+  const teamImgRef     = useScrollReveal()
+  const sourcingImgRef = useScrollReveal()
+  const sourcingTxtRef = useScrollReveal()
+  const timelineRef    = useScrollReveal()
+  const ctaRef         = useScrollReveal()
 
   return (
     <div className="w-full bg-white">
@@ -90,7 +91,7 @@ export function AboutPage() {
       <div className="relative text-white overflow-hidden" style={{ minHeight: 380 }}>
         <img src={ABOUT_HERO} alt="Our kitchen" className="absolute inset-0 w-full h-full object-cover scale-105" />
         <div className="absolute inset-0 bg-gradient-to-br from-[#1a3828]/85 via-black/65 to-black/50" />
-        <div ref={heroRef} className="reveal relative z-10 container mx-auto max-w-4xl px-4 py-28 text-center space-y-5">
+        <div className="relative z-10 container mx-auto max-w-4xl px-4 py-28 text-center space-y-5">
           <div className="flex items-center justify-center gap-3 mb-2">
             <span className="h-px w-8 bg-accent/50" />
             <span className="text-accent text-xs font-bold uppercase tracking-[0.2em]">Who We Are</span>
@@ -106,7 +107,7 @@ export function AboutPage() {
       </div>
 
       {/* ── Mission ── */}
-      <section className="py-20 px-4 bg-[#FEFDF9]">
+      <section className="py-16 px-4 bg-[#FEFDF9]">
         <div ref={missionRef} className="reveal container mx-auto max-w-3xl text-center space-y-6">
           <SectionLabel>Our Mission</SectionLabel>
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 leading-snug">
@@ -163,9 +164,9 @@ export function AboutPage() {
       </section>
 
       {/* ── Our Values ── */}
-      <section className="py-24 px-4 bg-[#FEFDF9]">
+      <section className="py-20 px-4 bg-[#FEFDF9]">
         <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <SectionLabel>What We Stand For</SectionLabel>
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900">Our Core Values</h2>
           </div>
@@ -218,10 +219,10 @@ export function AboutPage() {
       {/* ── Sourcing ── */}
       <section className="overflow-hidden">
         <div className="container mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 items-stretch">
-          <div ref={storyImgRef} className="reveal-left relative min-h-[380px]">
+          <div ref={sourcingImgRef} className="reveal-left relative min-h-[380px]">
             <img src={MARKET_IMG} alt="Fresh market ingredients" className="w-full h-full object-cover" />
           </div>
-          <div ref={storyTxtRef} className="reveal-right bg-[#FFF8EE] flex flex-col justify-center px-10 md:px-16 py-16 space-y-5">
+          <div ref={sourcingTxtRef} className="reveal-right bg-[#FFF8EE] flex flex-col justify-center px-10 md:px-16 py-16 space-y-5">
             <SectionLabel>Our Ingredients</SectionLabel>
             <h2 className="text-3xl font-serif font-bold text-gray-900 leading-snug">
               Freshness is Non-Negotiable
@@ -234,7 +235,7 @@ export function AboutPage() {
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               {["Palm Oil", "Iru (Locust Beans)", "Uziza Leaves", "Fresh Tomatoes", "Crayfish", "Stockfish"].map(item => (
-                <span key={item} className="bg-primary/8 text-primary text-xs font-semibold px-3 py-1.5 rounded-full border border-primary/15">
+                <span key={item} className="bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full border border-primary/15">
                   {item}
                 </span>
               ))}
@@ -244,9 +245,9 @@ export function AboutPage() {
       </section>
 
       {/* ── Timeline ── */}
-      <section className="py-24 px-4 bg-[#FEFDF9]">
+      <section className="py-20 px-4 bg-[#FEFDF9]">
         <div className="container mx-auto max-w-3xl">
-          <div className="text-center mb-16">
+          <div className="text-center mb-14">
             <SectionLabel>Our Journey</SectionLabel>
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900">How We Got Here</h2>
           </div>
