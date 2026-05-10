@@ -1,6 +1,5 @@
 import { createClient } from '@sanity/client'
-import imageUrlBuilder from '@sanity/image-url'
-import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import { createImageUrlBuilder } from '@sanity/image-url'
 
 const projectId = import.meta.env.VITE_SANITY_PROJECT_ID || 'placeholder'
 
@@ -11,6 +10,7 @@ export const sanityClient = createClient({
   useCdn: true,
 })
 
-const builder = imageUrlBuilder(sanityClient)
+const builder = createImageUrlBuilder(sanityClient)
 
-export const urlFor = (source: SanityImageSource) => builder.image(source)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const urlFor = (source: any) => builder.image(source)

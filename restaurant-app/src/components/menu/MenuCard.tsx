@@ -1,7 +1,6 @@
 import { MenuItem } from "../../types"
 import { formatPrice } from "../../lib/utils"
 import { urlFor } from "../../lib/sanityClient"
-import { Button } from "../ui/Button"
 import { useCartStore } from "../../features/cart/cartStore"
 import { ShoppingCart, Star } from "lucide-react"
 

@@ -1,5 +1,4 @@
 import * as React from "react"
-import { cn } from "../../lib/utils"
 import { X } from "lucide-react"
 
 export function Modal({ isOpen, onClose, title, children }: { isOpen: boolean, onClose: () => void, title: string, children: React.ReactNode }) {
