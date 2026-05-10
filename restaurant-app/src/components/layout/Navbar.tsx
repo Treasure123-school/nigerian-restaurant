@@ -11,22 +11,17 @@ export function Navbar() {
   const location = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  // Lock body scroll when menu is open
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = ""
-    }
+    document.body.style.overflow = mobileOpen ? "hidden" : ""
     return () => { document.body.style.overflow = "" }
   }, [mobileOpen])
 
-  // Close on route change
   useEffect(() => { setMobileOpen(false) }, [location.pathname])
 
   const links = [
-    { to: "/", label: "Home" },
-    { to: "/menu", label: "Menu" },
+    { to: "/",        label: "Home" },
+    { to: "/menu",    label: "Menu" },
+    { to: "/contact", label: "Contact" },
   ]
 
   return (
@@ -79,16 +74,11 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Full-screen mobile menu overlay */}
+      {/* Full-screen mobile menu */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex flex-col">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={() => setMobileOpen(false)}
-          />
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
 
-          {/* Panel — slides in from the top */}
           <div className="relative z-10 flex flex-col h-full bg-white">
             {/* Header row */}
             <div className="flex items-center justify-between px-5 h-16 border-b flex-shrink-0">
@@ -102,7 +92,7 @@ export function Navbar() {
               </button>
             </div>
 
-            {/* Nav links — start from the top */}
+            {/* Nav links — start from top */}
             <div className="flex-1 flex flex-col justify-start px-6 pt-8 gap-3">
               {links.map(({ to, label }) => (
                 <Link
@@ -134,7 +124,6 @@ export function Navbar() {
               </button>
             </div>
 
-            {/* Footer branding */}
             <div className="px-6 pb-10 text-center text-xs text-gray-400 flex-shrink-0">
               Authentic Nigerian Cuisine
             </div>
