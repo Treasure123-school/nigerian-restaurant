@@ -28,6 +28,7 @@ export function Navbar() {
   const links = [
     { to: "/",          label: "Home" },
     { to: "/menu",      label: "Menu" },
+    { to: "/about",     label: "About" },
     { to: "/services",  label: "Services" },
     { to: "/contact",   label: "Contact" },
   ]

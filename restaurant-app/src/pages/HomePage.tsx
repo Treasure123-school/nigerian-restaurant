@@ -102,7 +102,7 @@ export function HomePage() {
           <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0d1f13]/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in pb-28 md:pt-24">
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in pb-28 pt-16 md:pt-24">
           {/* Pill badge */}
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold px-4 py-2 rounded-full mb-8 tracking-wide">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
@@ -218,11 +218,14 @@ export function HomePage() {
             <p className="text-gray-600 leading-relaxed">
               From slow-cooked Egusi soup to smoky suya skewers, each dish tells a story. We believe food is more than nourishment — it is culture, community, and connection.
             </p>
-            <div className="pt-2">
-              <Link to="/contact">
+            <div className="pt-2 flex items-center gap-4">
+              <Link to="/about">
                 <Button className="rounded-full px-8 font-semibold">
-                  Get in Touch
+                  Read Our Story
                 </Button>
+              </Link>
+              <Link to="/about" className="text-sm font-medium text-primary underline underline-offset-4 hover:text-primary/80 transition-colors">
+                Learn more →
               </Link>
             </div>
           </div>

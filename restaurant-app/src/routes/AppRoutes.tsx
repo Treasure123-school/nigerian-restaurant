@@ -6,12 +6,14 @@ import { CheckoutPage } from "../pages/CheckoutPage"
 import { OrderConfirmationPage } from "../pages/OrderConfirmationPage"
 import { ContactPage } from "../pages/ContactPage"
 import { ServicesPage } from "../pages/ServicesPage"
+import { AboutPage } from "../pages/AboutPage"
 
 export function AppRoutes() {
   return (
     <Routes>
       <Route path="/"                    element={<HomePage />} />
       <Route path="/menu"                element={<MenuPage />} />
+      <Route path="/about"               element={<AboutPage />} />
       <Route path="/services"            element={<ServicesPage />} />
       <Route path="/cart"                element={<CartPage />} />
       <Route path="/checkout"            element={<CheckoutPage />} />
