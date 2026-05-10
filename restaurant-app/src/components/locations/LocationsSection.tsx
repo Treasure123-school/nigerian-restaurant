@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { MapPin, Clock, Navigation, Phone, CheckCircle } from "lucide-react"
 import { useScrollReveal } from "../../hooks/useScrollReveal"
 import { cn } from "../../lib/utils"
@@ -13,6 +13,7 @@ interface Branch {
   lat: number
   lng: number
   mapUrl: string
+  image: string
 }
 
 const BRANCHES: Branch[] = [
@@ -26,6 +27,7 @@ const BRANCHES: Branch[] = [
     lat: 6.4281,
     lng: 3.4219,
     mapUrl: "https://maps.google.com/?q=Victoria+Island+Lagos",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=320&fit=crop&auto=format",
   },
   {
     id: "lekki",
@@ -37,6 +39,7 @@ const BRANCHES: Branch[] = [
     lat: 6.4499,
     lng: 3.4765,
     mapUrl: "https://maps.google.com/?q=Lekki+Phase+1+Lagos",
+    image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&h=320&fit=crop&auto=format",
   },
   {
     id: "abuja",
@@ -48,6 +51,7 @@ const BRANCHES: Branch[] = [
     lat: 9.0765,
     lng: 7.4983,
     mapUrl: "https://maps.google.com/?q=Wuse+2+Abuja",
+    image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&h=320&fit=crop&auto=format",
   },
   {
     id: "ph",
@@ -59,6 +63,7 @@ const BRANCHES: Branch[] = [
     lat: 4.8396,
     lng: 7.0135,
     mapUrl: "https://maps.google.com/?q=GRA+Port+Harcourt",
+    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=320&fit=crop&auto=format",
   },
 ]
 
@@ -80,10 +85,10 @@ function formatDistance(km: number) {
 }
 
 export function LocationsSection() {
-  const [userPos, setUserPos]       = useState<{ lat: number; lng: number } | null>(null)
-  const [locError, setLocError]     = useState(false)
-  const [locating, setLocating]     = useState(false)
-  const [nearestId, setNearestId]   = useState<string | null>(null)
+  const [userPos, setUserPos]     = useState<{ lat: number; lng: number } | null>(null)
+  const [locError, setLocError]   = useState(false)
+  const [locating, setLocating]   = useState(false)
+  const [nearestId, setNearestId] = useState<string | null>(null)
 
   const headRef  = useScrollReveal()
   const cardsRef = useScrollReveal()
@@ -96,7 +101,6 @@ export function LocationsSection() {
         const { latitude: lat, longitude: lng } = pos.coords
         setUserPos({ lat, lng })
         setLocating(false)
-
         let minDist = Infinity
         let closest = BRANCHES[0].id
         for (const b of BRANCHES) {
@@ -109,9 +113,6 @@ export function LocationsSection() {
     )
   }
 
-  // Try silently on mount (no prompt yet — only on button click)
-  useEffect(() => {}, [])
-
   const branchesWithDist = BRANCHES.map((b) => ({
     ...b,
     distance: userPos ? haversineKm(userPos.lat, userPos.lng, b.lat, b.lng) : null,
@@ -123,7 +124,6 @@ export function LocationsSection() {
     <section className="py-20 bg-white px-4">
       <div className="container mx-auto max-w-6xl">
 
-        {/* Heading */}
         <div ref={headRef} className="reveal text-center mb-6">
           <span className="text-primary text-sm font-semibold uppercase tracking-widest">Where to Find Us</span>
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-text mt-2 mb-3">Our Locations</h2>
@@ -132,7 +132,6 @@ export function LocationsSection() {
           </p>
         </div>
 
-        {/* Locate me button */}
         <div className="text-center mb-10">
           {!userPos && !locError && (
             <button
@@ -151,13 +150,10 @@ export function LocationsSection() {
             </p>
           )}
           {locError && (
-            <p className="text-sm text-gray-500">
-              Location access denied. Browse all branches below.
-            </p>
+            <p className="text-sm text-gray-500">Location access denied. Browse all branches below.</p>
           )}
         </div>
 
-        {/* Branch cards */}
         <div ref={cardsRef} className="reveal-stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {branchesWithDist.map((branch) => {
             const isNearest = branch.id === nearestId
@@ -165,58 +161,72 @@ export function LocationsSection() {
               <div
                 key={branch.id}
                 className={cn(
-                  "relative rounded-2xl border p-6 flex flex-col gap-4 transition-all duration-300",
+                  "rounded-2xl border overflow-hidden flex flex-col transition-all duration-300 bg-white",
                   isNearest
-                    ? "border-primary bg-orange-50 shadow-lg shadow-primary/10 ring-1 ring-primary/20"
-                    : "border-gray-100 bg-gray-50 hover:shadow-md"
+                    ? "border-primary shadow-lg shadow-primary/10 ring-1 ring-primary/20"
+                    : "border-gray-100 hover:shadow-md"
                 )}
               >
-                {isNearest && (
-                  <span className="absolute -top-3 left-4 bg-primary text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
-                    📍 Nearest to you
-                  </span>
-                )}
-
-                <div>
-                  <p className="text-xs font-semibold text-primary uppercase tracking-wide mb-1">{branch.area}</p>
-                  <h3 className="font-bold text-lg text-secondary leading-tight">{branch.name}</h3>
-                </div>
-
-                {branch.distance !== null && (
-                  <div className="flex items-center gap-1.5 text-sm font-semibold text-green-700 bg-green-50 border border-green-200 px-3 py-1.5 rounded-full w-fit">
-                    <Navigation className="w-3.5 h-3.5" />
-                    {formatDistance(branch.distance)}
+                <div className="relative aspect-[16/9] overflow-hidden flex-shrink-0">
+                  <img
+                    src={branch.image}
+                    alt={branch.name}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute bottom-3 left-3">
+                    <span className="bg-white/90 backdrop-blur-sm text-secondary text-xs font-bold px-2.5 py-1 rounded-full">
+                      {branch.area}
+                    </span>
                   </div>
-                )}
-
-                <div className="space-y-2.5 text-sm text-gray-600 flex-1">
-                  <div className="flex gap-2">
-                    <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="leading-relaxed">{branch.address}</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <Phone className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                    <a href={`tel:${branch.phone}`} className="hover:text-primary transition-colors">{branch.phone}</a>
-                  </div>
-                  <div className="flex gap-2">
-                    <Clock className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="whitespace-pre-wrap leading-relaxed">{branch.hours}</span>
-                  </div>
-                </div>
-
-                <a
-                  href={branch.mapUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cn(
-                    "w-full text-center py-2.5 rounded-xl text-sm font-semibold transition-colors border",
-                    isNearest
-                      ? "bg-primary text-white border-primary hover:bg-primary/90"
-                      : "bg-white text-secondary border-gray-200 hover:border-secondary hover:text-primary"
+                  {isNearest && (
+                    <div className="absolute top-3 left-3">
+                      <span className="bg-primary text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">
+                        📍 Nearest to you
+                      </span>
+                    </div>
                   )}
-                >
-                  Get Directions
-                </a>
+                </div>
+
+                <div className="p-5 flex flex-col gap-3 flex-1">
+                  <h3 className="font-bold text-lg text-secondary leading-tight">{branch.name}</h3>
+
+                  {branch.distance !== null && (
+                    <div className="flex items-center gap-1.5 text-sm font-semibold text-green-700 bg-green-50 border border-green-200 px-3 py-1.5 rounded-full w-fit">
+                      <Navigation className="w-3.5 h-3.5" />
+                      {formatDistance(branch.distance)}
+                    </div>
+                  )}
+
+                  <div className="space-y-2 text-sm text-gray-600 flex-1">
+                    <div className="flex gap-2">
+                      <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">{branch.address}</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <Phone className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                      <a href={`tel:${branch.phone}`} className="hover:text-primary transition-colors">{branch.phone}</a>
+                    </div>
+                    <div className="flex gap-2">
+                      <Clock className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                      <span className="whitespace-pre-wrap leading-relaxed">{branch.hours}</span>
+                    </div>
+                  </div>
+
+                  <a
+                    href={branch.mapUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={cn(
+                      "w-full text-center py-2.5 rounded-xl text-sm font-semibold transition-colors border mt-1",
+                      isNearest
+                        ? "bg-primary text-white border-primary hover:bg-primary/90"
+                        : "bg-white text-secondary border-gray-200 hover:border-secondary hover:text-primary"
+                    )}
+                  >
+                    Get Directions
+                  </a>
+                </div>
               </div>
             )
           })}
