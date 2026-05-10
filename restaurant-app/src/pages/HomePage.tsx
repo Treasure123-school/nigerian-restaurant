@@ -218,14 +218,11 @@ export function HomePage() {
             <p className="text-gray-600 leading-relaxed">
               From slow-cooked Egusi soup to smoky suya skewers, each dish tells a story. We believe food is more than nourishment — it is culture, community, and connection.
             </p>
-            <div className="pt-2 flex items-center gap-4">
+            <div className="pt-2">
               <Link to="/about">
                 <Button className="rounded-full px-8 font-semibold">
                   Read Our Story
                 </Button>
-              </Link>
-              <Link to="/about" className="text-sm font-medium text-primary underline underline-offset-4 hover:text-primary/80 transition-colors">
-                Learn more →
               </Link>
             </div>
           </div>
