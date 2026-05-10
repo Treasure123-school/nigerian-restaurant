@@ -3,6 +3,7 @@ import { useCategories } from "../features/menu/useCategories"
 import { useMenuItems } from "../features/menu/useMenuItems"
 import { MenuGrid } from "../components/menu/MenuGrid"
 import { CategoryFilter } from "../components/menu/CategoryFilter"
+import { useScrollReveal } from "../hooks/useScrollReveal"
 
 const MENU_HEADER_IMAGE = "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1920&h=600&fit=crop&auto=format"
 
@@ -12,10 +13,13 @@ export function MenuPage() {
   const { data: categories, isLoading: isCategoriesLoading } = useCategories()
   const { data: menuItems, isLoading: isMenuLoading } = useMenuItems(activeCategory)
 
+  const headRef = useScrollReveal()
+  const gridRef = useScrollReveal()
+
   return (
     <div className="w-full flex flex-col" style={{ minHeight: "calc(100vh - 64px)" }}>
 
-      {/* Menu hero header with background image */}
+      {/* Menu hero header */}
       <div className="relative text-white py-20 px-4 overflow-hidden">
         <img
           src={MENU_HEADER_IMAGE}
@@ -23,7 +27,7 @@ export function MenuPage() {
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-secondary/60 to-black/60" />
-        <div className="relative z-10 container mx-auto max-w-7xl text-center">
+        <div ref={headRef} className="reveal relative z-10 container mx-auto max-w-7xl text-center">
           <span className="inline-block text-accent text-sm font-semibold uppercase tracking-widest mb-3">
             What We Serve
           </span>
@@ -49,9 +53,9 @@ export function MenuPage() {
         </div>
       )}
 
-      {/* Menu grid — flex-grow fills remaining screen */}
+      {/* Menu grid */}
       <div className="flex-1 bg-gray-50">
-        <div className="container mx-auto px-4 max-w-7xl py-10">
+        <div ref={gridRef} className="reveal container mx-auto px-4 max-w-7xl py-10">
           <MenuGrid items={menuItems || []} isLoading={isMenuLoading} />
         </div>
       </div>
