@@ -4,9 +4,24 @@ import { ShoppingCart, Menu, X } from "lucide-react"
 import { SITE_NAME } from "../../constants"
 import { useCartStore } from "../../features/cart/cartStore"
 import { cn } from "../../lib/utils"
+import { useQuery } from "@tanstack/react-query"
+import { sanityClient } from "../../lib/sanityClient"
+import { SITE_SETTINGS } from "../../lib/queries"
+import { SiteSettings } from "../../types"
+import { DEMO_SETTINGS, isSanityConfigured } from "../../lib/demoData"
 
 export function Navbar() {
   const { getTotalItems, openDrawer } = useCartStore()
+
+  const { data: settings } = useQuery<SiteSettings>({
+    queryKey: ["siteSettings"],
+    queryFn: () => {
+      if (!isSanityConfigured()) return Promise.resolve(DEMO_SETTINGS)
+      return sanityClient.fetch(SITE_SETTINGS)
+    },
+  })
+
+  const restaurantName = settings?.restaurantName || SITE_NAME
   const totalItems = getTotalItems()
   const location = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -43,7 +58,7 @@ export function Navbar() {
       )}>
         <div className="container mx-auto px-5 h-16 flex items-center justify-between max-w-7xl">
           <Link to="/" className="font-serif text-2xl font-bold text-primary tracking-tight">
-            {SITE_NAME}
+            {restaurantName}
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
@@ -99,7 +114,7 @@ export function Navbar() {
         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
         <div className={cn("relative z-10 flex flex-col h-full bg-[#FEFDF9] mobile-panel w-full shadow-2xl", mobileOpen && "open")}>
           <div className="flex items-center justify-between px-5 h-16 border-b border-gray-100">
-            <span className="font-serif text-2xl font-bold text-primary">{SITE_NAME}</span>
+            <span className="font-serif text-2xl font-bold text-primary">{restaurantName}</span>
             <button onClick={() => setMobileOpen(false)} className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
               <X className="w-5 h-5" />
             </button>
