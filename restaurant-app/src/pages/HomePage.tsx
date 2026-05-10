@@ -116,15 +116,15 @@ export function HomePage() {
             {settings?.heroSubtext || "Experience the rich and vibrant flavours of Nigeria, made fresh daily with traditional recipes passed down through generations."}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-16 justify-center items-center">
             <Link to="/menu">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-semibold px-10 py-4 rounded-full shadow-2xl shadow-primary/40 text-base">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-semibold px-10 py-4 rounded-full shadow-2xl shadow-primary/40 text-base w-48">
                 Order Now
               </Button>
             </Link>
             {settings?.whatsappNumber && (
               <a href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, "")}`} target="_blank" rel="noreferrer">
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-full px-8 py-4 text-base font-light">
+                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-full px-8 py-4 text-base font-light w-48">
                   WhatsApp Order
                 </Button>
               </a>
