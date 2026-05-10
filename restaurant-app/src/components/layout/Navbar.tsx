@@ -10,6 +10,13 @@ export function Navbar() {
   const totalItems = getTotalItems()
   const location = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 20)
+    window.addEventListener("scroll", handler, { passive: true })
+    return () => window.removeEventListener("scroll", handler)
+  }, [])
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : ""
@@ -26,10 +33,15 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b bg-white/90 backdrop-blur-md shadow-sm">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between max-w-7xl">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="font-serif text-2xl font-bold text-primary tracking-tight">{SITE_NAME}</span>
+      <header className={cn(
+        "sticky top-0 z-40 w-full transition-all duration-300",
+        scrolled
+          ? "bg-white/95 backdrop-blur-md shadow-md border-b border-gray-100"
+          : "bg-white/80 backdrop-blur-sm border-b border-gray-100"
+      )}>
+        <div className="container mx-auto px-5 h-16 flex items-center justify-between max-w-7xl">
+          <Link to="/" className="font-serif text-2xl font-bold text-primary tracking-tight">
+            {SITE_NAME}
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
@@ -38,13 +50,17 @@ export function Navbar() {
                 key={to}
                 to={to}
                 className={cn(
-                  "text-sm font-medium transition-colors relative pb-0.5",
+                  "text-sm font-medium transition-colors relative pb-0.5 group",
                   location.pathname === to
-                    ? "text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary after:rounded-full"
-                    : "text-gray-600 hover:text-primary"
+                    ? "text-primary"
+                    : "text-gray-500 hover:text-gray-900"
                 )}
               >
                 {label}
+                <span className={cn(
+                  "absolute bottom-0 left-0 h-0.5 bg-primary rounded-full transition-all duration-300",
+                  location.pathname === to ? "w-full" : "w-0 group-hover:w-full"
+                )} />
               </Link>
             ))}
           </nav>
@@ -55,18 +71,16 @@ export function Navbar() {
               className="relative p-2.5 hover:bg-orange-50 rounded-full transition-colors"
               aria-label="Open cart"
             >
-              <ShoppingCart className="w-5 h-5 text-text" />
+              <ShoppingCart className="w-5 h-5 text-gray-700" />
               {totalItems > 0 && (
                 <span className="absolute top-0.5 right-0.5 flex items-center justify-center bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full">
                   {totalItems > 9 ? "9+" : totalItems}
                 </span>
               )}
             </button>
-
             <button
-              className="md:hidden p-2 rounded-md hover:bg-gray-100 transition-colors"
-              onClick={() => setMobileOpen((o) => !o)}
-              aria-label="Toggle menu"
+              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              onClick={() => setMobileOpen(o => !o)}
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -74,45 +88,36 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Full-screen mobile menu */}
+      {/* Mobile full-screen overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex flex-col">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-
-          <div className="relative z-10 flex flex-col h-full bg-white">
-            {/* Header row */}
-            <div className="flex items-center justify-between px-5 h-16 border-b flex-shrink-0">
+          <div className="relative z-10 flex flex-col h-full bg-[#FEFDF9]">
+            <div className="flex items-center justify-between px-5 h-16 border-b border-gray-100">
               <span className="font-serif text-2xl font-bold text-primary">{SITE_NAME}</span>
-              <button
-                onClick={() => setMobileOpen(false)}
-                className="p-2 rounded-md hover:bg-gray-100 transition-colors"
-                aria-label="Close menu"
-              >
-                <X className="w-5 h-5 text-gray-600" />
+              <button onClick={() => setMobileOpen(false)} className="p-2 rounded-lg hover:bg-gray-100">
+                <X className="w-5 h-5" />
               </button>
             </div>
-
-            {/* Nav links — start from top */}
-            <div className="flex-1 flex flex-col justify-start px-6 pt-8 gap-3">
+            <div className="flex flex-col justify-start px-5 pt-8 gap-2 flex-1">
               {links.map(({ to, label }) => (
                 <Link
                   key={to}
                   to={to}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    "flex items-center px-6 py-5 rounded-2xl text-2xl font-serif font-bold transition-colors",
+                    "flex items-center px-5 py-5 rounded-2xl text-2xl font-serif font-bold transition-all duration-200",
                     location.pathname === to
-                      ? "bg-primary text-white"
-                      : "bg-gray-50 text-secondary hover:bg-orange-50 hover:text-primary"
+                      ? "bg-primary text-white shadow-lg shadow-primary/25"
+                      : "text-gray-800 hover:bg-primary/5 hover:text-primary"
                   )}
                 >
                   {label}
                 </Link>
               ))}
-
               <button
                 onClick={() => { setMobileOpen(false); openDrawer() }}
-                className="flex items-center gap-3 px-6 py-5 rounded-2xl text-2xl font-serif font-bold bg-gray-50 text-secondary hover:bg-orange-50 hover:text-primary transition-colors"
+                className="flex items-center gap-3 px-5 py-5 rounded-2xl text-2xl font-serif font-bold text-gray-800 hover:bg-primary/5 hover:text-primary transition-all duration-200"
               >
                 <ShoppingCart className="w-6 h-6" />
                 Cart
@@ -123,10 +128,7 @@ export function Navbar() {
                 )}
               </button>
             </div>
-
-            <div className="px-6 pb-10 text-center text-xs text-gray-400 flex-shrink-0">
-              Authentic Nigerian Cuisine
-            </div>
+            <p className="text-center text-xs text-gray-300 pb-10 font-light">Authentic Nigerian Cuisine</p>
           </div>
         </div>
       )}

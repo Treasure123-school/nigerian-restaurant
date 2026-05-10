@@ -8,24 +8,26 @@ import { MenuGrid } from "../components/menu/MenuGrid"
 import { Button } from "../components/ui/Button"
 import { Spinner } from "../components/ui/Spinner"
 import { DEMO_SETTINGS, isSanityConfigured } from "../lib/demoData"
-import { Leaf, Clock, Star, MessageCircle, Quote } from "lucide-react"
+import { Leaf, Clock, Star, MessageCircle, Quote, ChefHat } from "lucide-react"
 import { useScrollReveal } from "../hooks/useScrollReveal"
 import { LocationsSection } from "../components/locations/LocationsSection"
 
 const HERO_IMAGE  = "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&h=1080&fit=crop&auto=format"
 const ABOUT_IMAGE = "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&h=700&fit=crop&auto=format"
+const CTA_IMAGE   = "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1920&h=800&fit=crop&auto=format"
 
 const PERKS = [
-  { icon: Leaf,  label: "Fresh Daily",     desc: "Prepared each morning with locally sourced ingredients" },
-  { icon: Star,  label: "Authentic Taste", desc: "Traditional recipes passed down through generations" },
-  { icon: Clock, label: "Fast Service",    desc: "Hot food ready quickly, dine in or order online" },
+  { icon: Leaf,     label: "Farm Fresh",       desc: "Locally sourced ingredients, prepared every single morning" },
+  { icon: ChefHat,  label: "Master Chefs",     desc: "Decades of experience in authentic Nigerian cooking" },
+  { icon: Clock,    label: "Ready Fast",        desc: "Hot, freshly made meals delivered or ready for dine-in" },
+  { icon: Star,     label: "Top Rated",         desc: "4.9★ rated by over 5,000 satisfied customers" },
 ]
 
 const STATS = [
-  { value: "8+",   label: "Years of Experience" },
-  { value: "50+",  label: "Dishes on the Menu" },
-  { value: "5K+",  label: "Happy Customers" },
-  { value: "4.9",  label: "Average Rating" },
+  { value: "8",   suffix: "+", label: "Years Serving" },
+  { value: "50",  suffix: "+", label: "Signature Dishes" },
+  { value: "5K",  suffix: "+", label: "Happy Customers" },
+  { value: "4.9", suffix: "★", label: "Average Rating" },
 ]
 
 const TESTIMONIALS = [
@@ -44,10 +46,20 @@ const TESTIMONIALS = [
   {
     name: "Fatima B.",
     role: "Local Resident",
-    text: "We order every Friday as a family. The suya platter never disappoints and the WhatsApp ordering is so convenient. Highly recommend to everyone!",
+    text: "We order every Friday as a family. The suya platter never disappoints and the WhatsApp ordering is so convenient. Highly recommend!",
     rating: 5,
   },
 ]
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center justify-center gap-3 mb-4">
+      <span className="h-px w-8 bg-primary/40 rounded-full" />
+      <span className="text-primary text-xs font-bold uppercase tracking-[0.2em]">{children}</span>
+      <span className="h-px w-8 bg-primary/40 rounded-full" />
+    </div>
+  )
+}
 
 export function HomePage() {
   const { data: fetchedSettings, isLoading: isSettingsLoading } = useQuery<SiteSettings>({
@@ -68,111 +80,122 @@ export function HomePage() {
     ? urlFor(settings.heroImage).width(1920).height(1080).url()
     : HERO_IMAGE
 
-  const perksRef      = useScrollReveal()
-  const statsRef      = useScrollReveal()
-  const featHeadRef   = useScrollReveal()
-  const featGridRef   = useScrollReveal()
-  const featBtnRef    = useScrollReveal()
-  const aboutImgRef   = useScrollReveal()
-  const aboutTextRef  = useScrollReveal()
-  const testimHeadRef = useScrollReveal()
-  const testimGridRef = useScrollReveal()
-  const ctaRef        = useScrollReveal()
+  const perksRef     = useScrollReveal()
+  const statsRef     = useScrollReveal()
+  const featHeadRef  = useScrollReveal()
+  const featGridRef  = useScrollReveal()
+  const featBtnRef   = useScrollReveal()
+  const aboutImgRef  = useScrollReveal()
+  const aboutTextRef = useScrollReveal()
+  const testHeadRef  = useScrollReveal()
+  const testGridRef  = useScrollReveal()
+  const ctaRef       = useScrollReveal()
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full">
 
       {/* ── Hero ── */}
-      <section className="relative w-full min-h-[92vh] flex items-center justify-center">
+      <section className="relative w-full min-h-[92vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImageSrc} alt="Nigerian cuisine" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
+          <img src={heroImageSrc} alt="Nigerian cuisine" className="w-full h-full object-cover scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-black/55 to-black/40" />
+          {/* Warm vignette at bottom */}
+          <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0d1f13]/80 to-transparent" />
         </div>
-        <div className="relative z-10 text-center px-4 max-w-3xl mx-auto space-y-6 animate-fade-in">
-          <p className="text-accent/90 text-sm font-semibold uppercase tracking-[0.2em]">
-            Authentic Nigerian Cuisine
-          </p>
+
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in">
+          {/* Pill badge */}
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold px-4 py-2 rounded-full mb-8 tracking-wide">
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            Now Open · Victoria Island, Lagos
+          </div>
+
           {isSettingsLoading ? <Spinner /> : (
             <>
-              <h1 className="text-5xl md:text-7xl font-serif font-bold text-white leading-tight">
+              <h1 className="text-5xl sm:text-6xl md:text-8xl font-serif font-bold text-white leading-[1.05] mb-6 drop-shadow-2xl">
                 {settings?.heroHeadline || "Authentic Nigerian Cuisine"}
               </h1>
-              <p className="text-lg text-white/75 max-w-lg mx-auto leading-relaxed font-light">
-                {settings?.heroSubtext || "Experience the rich and vibrant flavors of Nigeria, delivered straight to your door."}
+              <p className="text-lg md:text-xl text-white/70 max-w-xl mx-auto leading-relaxed mb-10 font-light">
+                {settings?.heroSubtext || "Experience the rich and vibrant flavors of Nigeria, made fresh daily with love."}
               </p>
             </>
           )}
-          <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/menu">
-              <Button size="lg" className="font-semibold px-10 shadow-lg">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-semibold px-10 py-4 rounded-full shadow-2xl shadow-primary/40 text-base">
                 Order Now
               </Button>
             </Link>
             {settings?.whatsappNumber && (
               <a href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, "")}`} target="_blank" rel="noreferrer">
-                <Button size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10 hover:border-white/70 px-8 font-light">
+                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-full px-8 py-4 text-base font-light">
                   WhatsApp Order
                 </Button>
               </a>
             )}
           </div>
         </div>
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/40 text-xs z-10 animate-bounce">
-          <span className="tracking-widest uppercase text-[10px]">scroll</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M12 5v14M5 12l7 7 7-7"/>
-          </svg>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-bounce flex flex-col items-center gap-1">
+          <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-1.5">
+            <div className="w-1 h-2 bg-white/60 rounded-full animate-bounce" />
+          </div>
         </div>
       </section>
 
       {/* ── Perks ── */}
-      <section className="border-b border-gray-100">
+      <section className="bg-[#FFF8EE] border-y border-orange-100">
         <div
           ref={perksRef}
-          className="reveal-stagger container mx-auto max-w-4xl px-4 py-12 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-gray-100"
+          className="reveal-stagger container mx-auto max-w-5xl px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-orange-100"
         >
           {PERKS.map(({ icon: Icon, label, desc }) => (
-            <div key={label} className="flex items-start gap-4 py-6 sm:py-0 sm:px-8 first:pl-0 last:pr-0">
-              <Icon className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="font-semibold text-sm text-gray-900">{label}</p>
-                <p className="text-xs text-gray-400 mt-1 leading-relaxed">{desc}</p>
+            <div key={label} className="flex flex-col items-center text-center px-6 py-6 gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <Icon className="w-5 h-5 text-primary" />
               </div>
+              <p className="font-bold text-sm text-gray-800">{label}</p>
+              <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── Stats ── */}
-      <section className="py-20 border-b border-gray-100">
-        <div
-          ref={statsRef}
-          className="reveal-stagger container mx-auto max-w-3xl px-4 grid grid-cols-2 md:grid-cols-4 gap-0 text-center divide-x divide-gray-100"
-        >
-          {STATS.map(({ value, label }) => (
-            <div key={label} className="px-6 py-4">
-              <p className="text-4xl md:text-5xl font-serif font-bold text-gray-900">{value}<span className="text-primary text-2xl">+</span></p>
-              <p className="text-xs text-gray-400 mt-2 uppercase tracking-wider">{label}</p>
+      <section className="bg-[#1a3828] py-20 px-4">
+        <div ref={statsRef} className="reveal-stagger container mx-auto max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-0 text-center divide-x divide-white/10">
+          {STATS.map(({ value, suffix, label }) => (
+            <div key={label} className="px-8 py-6">
+              <p className="font-serif text-5xl md:text-6xl font-bold text-accent leading-none">
+                {value}<span className="text-3xl">{suffix}</span>
+              </p>
+              <p className="text-white/50 text-xs uppercase tracking-widest mt-3 font-medium">{label}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── Featured Menu ── */}
-      <section className="py-24 px-4">
+      <section className="py-24 px-4 bg-[#FEFDF9]">
         <div className="container mx-auto max-w-7xl">
-          <div ref={featHeadRef} className="reveal text-center mb-14">
-            <p className="text-primary text-xs font-semibold uppercase tracking-[0.2em] mb-3">Our Specialties</p>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900">Chef's Recommendations</h2>
-            <div className="w-12 h-0.5 bg-primary mx-auto mt-5" />
+          <div ref={featHeadRef} className="reveal text-center mb-16">
+            <SectionLabel>Chef's Picks</SectionLabel>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mt-2">
+              Signature Dishes
+            </h2>
+            <p className="text-gray-500 max-w-lg mx-auto mt-4 leading-relaxed">
+              Our most-loved dishes, prepared fresh daily with authentic recipes and the finest ingredients.
+            </p>
           </div>
           <div ref={featGridRef} className="reveal">
             <MenuGrid items={featuredItems || []} isLoading={isFeaturedLoading} />
           </div>
           <div ref={featBtnRef} className="reveal text-center mt-14">
             <Link to="/menu">
-              <Button variant="outline" size="lg" className="border-gray-300 text-gray-700 hover:border-primary hover:text-primary px-10">
-                View Full Menu
+              <Button variant="outline" size="lg" className="rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white px-12 font-semibold transition-all duration-300">
+                Explore Full Menu
               </Button>
             </Link>
           </div>
@@ -180,53 +203,64 @@ export function HomePage() {
       </section>
 
       {/* ── About / Story ── */}
-      <section className="py-24 px-4 border-t border-gray-100">
-        <div className="container mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div ref={aboutImgRef} className="reveal-left rounded-2xl overflow-hidden aspect-[4/3] shadow-sm">
+      <section className="py-0 overflow-hidden">
+        <div className="container mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-2 items-stretch">
+          <div ref={aboutImgRef} className="reveal-left relative min-h-[480px] md:min-h-[600px]">
             <img src={ABOUT_IMAGE} alt="Our kitchen" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#FEFDF9]/20" />
           </div>
-          <div ref={aboutTextRef} className="reveal-right space-y-6">
-            <p className="text-primary text-xs font-semibold uppercase tracking-[0.2em]">Our Story</p>
+          <div ref={aboutTextRef} className="reveal-right bg-[#FFF8EE] flex flex-col justify-center px-10 md:px-16 py-16 space-y-6">
+            <SectionLabel>Our Story</SectionLabel>
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 leading-snug">
               Bringing the Heart of Nigeria to Your Table
             </h2>
-            <div className="w-10 h-0.5 bg-primary" />
-            <p className="text-gray-500 leading-relaxed">
-              Founded over eight years ago, our restaurant was born from a simple passion — to share the bold, comforting flavours of authentic Nigerian cooking with the world. Every recipe is rooted in tradition, prepared with the freshest locally sourced ingredients.
+            <p className="text-gray-600 leading-relaxed">
+              Founded over eight years ago with a deep love for Nigerian culture and cuisine. Every recipe is rooted in tradition — the kind passed down through generations, from grandmother to mother to chef.
             </p>
-            <p className="text-gray-500 leading-relaxed">
-              From our slow-cooked Egusi soup to our smoky suya skewers, every dish is crafted with love and care. We believe food is more than sustenance — it's culture, community, and connection.
+            <p className="text-gray-600 leading-relaxed">
+              From slow-cooked Egusi soup to smoky suya skewers, each dish tells a story. We believe food is more than nourishment — it is culture, community, and connection.
             </p>
-            <Link to="/contact">
-              <Button variant="outline" className="border-gray-300 text-gray-700 hover:border-primary hover:text-primary mt-2">
-                Get in Touch
-              </Button>
-            </Link>
+            <div className="pt-2">
+              <Link to="/contact">
+                <Button className="rounded-full px-8 font-semibold">
+                  Get in Touch
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── Testimonials ── */}
-      <section className="py-24 px-4 border-t border-gray-100">
+      <section className="py-24 px-4 bg-[#FEFDF9]">
         <div className="container mx-auto max-w-6xl">
-          <div ref={testimHeadRef} className="reveal text-center mb-14">
-            <p className="text-primary text-xs font-semibold uppercase tracking-[0.2em] mb-3">What People Say</p>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900">Customer Reviews</h2>
-            <div className="w-12 h-0.5 bg-primary mx-auto mt-5" />
+          <div ref={testHeadRef} className="reveal text-center mb-16">
+            <SectionLabel>Reviews</SectionLabel>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mt-2">
+              What Our Guests Say
+            </h2>
           </div>
-          <div ref={testimGridRef} className="reveal-stagger grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div ref={testGridRef} className="reveal-stagger grid grid-cols-1 md:grid-cols-3 gap-6">
             {TESTIMONIALS.map((t) => (
-              <div key={t.name} className="flex flex-col gap-5 border-l-2 border-primary pl-6 py-1">
-                <div className="flex gap-0.5">
+              <div
+                key={t.name}
+                className="bg-white rounded-3xl p-8 shadow-[0_4px_32px_rgba(0,0,0,0.07)] hover:shadow-[0_8px_48px_rgba(0,0,0,0.12)] transition-shadow duration-300 flex flex-col gap-5 border border-gray-50"
+              >
+                <div className="flex gap-1">
                   {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-accent text-accent" />
+                    <Star key={i} className="w-4 h-4 fill-accent text-accent" />
                   ))}
                 </div>
-                <Quote className="w-6 h-6 text-gray-200 -mb-2" />
-                <p className="text-gray-600 leading-relaxed text-sm flex-1 italic">{t.text}</p>
-                <div>
-                  <p className="font-semibold text-sm text-gray-900">{t.name}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{t.role}</p>
+                <Quote className="w-7 h-7 text-primary/15" />
+                <p className="text-gray-600 leading-relaxed text-sm flex-1 italic">"{t.text}"</p>
+                <div className="flex items-center gap-3 pt-2 border-t border-gray-50">
+                  <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary text-sm">
+                    {t.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-gray-900">{t.name}</p>
+                    <p className="text-xs text-gray-400">{t.role}</p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -235,34 +269,31 @@ export function HomePage() {
       </section>
 
       {/* ── Locations ── */}
-      <div className="border-t border-gray-100">
-        <LocationsSection />
-      </div>
+      <LocationsSection />
 
-      {/* ── CTA ── */}
-      <section
-        ref={ctaRef}
-        className="reveal relative overflow-hidden bg-secondary py-24 px-4 text-center text-white"
-      >
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{ backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`, backgroundSize: "32px 32px" }}
-        />
-        <div className="relative z-10 max-w-xl mx-auto space-y-6">
-          <p className="text-accent text-xs font-semibold uppercase tracking-[0.2em]">Ready to Order?</p>
-          <h2 className="text-3xl md:text-4xl font-serif font-bold leading-tight">Hungry? Let's Fix That.</h2>
-          <p className="text-white/60 leading-relaxed font-light">
+      {/* ── CTA — food photo backdrop ── */}
+      <section ref={ctaRef} className="reveal relative overflow-hidden py-32 px-4 text-center text-white">
+        <img src={CTA_IMAGE} alt="Order now" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1a3828]/90 via-[#1a3828]/80 to-black/70" />
+        <div className="relative z-10 max-w-2xl mx-auto space-y-7">
+          <SectionLabel>
+            <span className="text-accent/80">Ready to Order?</span>
+          </SectionLabel>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white leading-tight">
+            Hungry? <span className="text-accent">Let's Fix That.</span>
+          </h2>
+          <p className="text-white/60 text-lg leading-relaxed font-light">
             Browse our full menu and place your order in minutes — or reach us directly on WhatsApp.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
             <Link to="/menu">
-              <Button size="lg" className="bg-white text-secondary hover:bg-gray-100 font-semibold px-10 border-0 shadow-none">
+              <Button size="lg" className="bg-white text-secondary hover:bg-white/90 font-bold px-12 rounded-full border-0 shadow-xl">
                 View Full Menu
               </Button>
             </Link>
             {settings?.whatsappNumber && (
               <a href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, "")}`} target="_blank" rel="noreferrer">
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 hover:border-white/60 px-8 font-light">
+                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-full px-10 font-light">
                   <MessageCircle className="w-4 h-4 mr-2" /> WhatsApp Us
                 </Button>
               </a>
