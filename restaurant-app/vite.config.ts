@@ -8,14 +8,6 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5000,
     allowedHosts: true,
-    proxy: {
-      '/sanity-api': {
-        target: 'https://zrej33jn.apicdn.sanity.io',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/sanity-api/, ''),
-        secure: true,
-      },
-    },
   },
   build: {
     outDir: 'dist',
