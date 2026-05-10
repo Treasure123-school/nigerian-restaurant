@@ -10,10 +10,12 @@ import { Spinner } from "../components/ui/Spinner"
 import { DEMO_SETTINGS, isSanityConfigured } from "../lib/demoData"
 import { Leaf, Clock, Star, MapPin, MessageCircle } from "lucide-react"
 
+const HERO_IMAGE = "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&h=1080&fit=crop&auto=format"
+
 const PERKS = [
-  { icon: Leaf, label: "Fresh Daily", desc: "Every dish is prepared fresh with quality ingredients" },
-  { icon: Star, label: "Authentic Taste", desc: "Traditional Nigerian recipes passed down for generations" },
-  { icon: Clock, label: "Fast Service", desc: "Hot meals ready quickly — dine in or order online" },
+  { icon: Leaf,  label: "Fresh Daily",      desc: "Every dish prepared fresh with quality ingredients" },
+  { icon: Star,  label: "Authentic Taste",  desc: "Traditional Nigerian recipes passed down for generations" },
+  { icon: Clock, label: "Fast Service",     desc: "Hot meals ready quickly — dine in or order online" },
 ]
 
 export function HomePage() {
@@ -33,50 +35,45 @@ export function HomePage() {
   const settings = fetchedSettings ?? DEMO_SETTINGS
   const { data: featuredItems, isLoading: isFeaturedLoading } = useFeaturedItems()
 
+  const heroImageSrc = settings?.heroImage?.asset?._ref
+    ? urlFor(settings.heroImage).width(1920).height(1080).url()
+    : HERO_IMAGE
+
   return (
     <div className="w-full">
       {/* Hero */}
-      <section className="relative w-full min-h-[85vh] flex items-center justify-center pt-16">
-        {settings?.heroImage?.asset?._ref ? (
-          <div className="absolute inset-0 z-0">
-            <img
-              src={urlFor(settings.heroImage).width(1920).height(1080).url()}
-              alt={settings.heroHeadline}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
-          </div>
-        ) : (
-          <div className="absolute inset-0 z-0 bg-gradient-to-br from-secondary via-secondary/95 to-green-900">
-            <div
-              className="absolute inset-0 opacity-[0.06]"
-              style={{
-                backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-                backgroundSize: "32px 32px",
-              }}
-            />
-          </div>
-        )}
+      <section className="relative w-full min-h-[90vh] flex items-center justify-center">
+        {/* Background image — always shown */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={heroImageSrc}
+            alt="Nigerian cuisine"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/55 to-black/75" />
+        </div>
 
         <div className="relative z-10 text-center px-4 max-w-3xl mx-auto space-y-6 animate-fade-in">
-          <span className="inline-block bg-accent/20 border border-accent/40 text-accent text-sm font-medium px-4 py-1.5 rounded-full">
+          <span className="inline-block bg-accent/25 border border-accent/50 text-accent text-sm font-semibold px-5 py-1.5 rounded-full tracking-wide">
             🍛 Authentic Nigerian Cuisine
           </span>
+
           {isSettingsLoading ? (
             <Spinner />
           ) : (
             <>
-              <h1 className="text-5xl md:text-7xl font-serif font-bold text-white leading-tight">
+              <h1 className="text-5xl md:text-7xl font-serif font-bold text-white leading-tight drop-shadow-lg">
                 {settings?.heroHeadline || "Authentic Nigerian Cuisine"}
               </h1>
-              <p className="text-lg md:text-xl text-gray-200 max-w-xl mx-auto leading-relaxed">
+              <p className="text-lg md:text-xl text-gray-200 max-w-xl mx-auto leading-relaxed drop-shadow">
                 {settings?.heroSubtext || "Experience the rich and vibrant flavors of Nigeria, delivered straight to your door."}
               </p>
             </>
           )}
-          <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center items-center">
+
+          <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center items-center">
             <Link to="/menu">
-              <Button size="lg" className="font-bold px-10 shadow-lg shadow-primary/30">
+              <Button size="lg" className="font-bold px-10 shadow-xl shadow-primary/40 hover:scale-105 transition-transform">
                 Order Now
               </Button>
             </Link>
@@ -85,17 +82,26 @@ export function HomePage() {
                 href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}`}
                 target="_blank" rel="noreferrer"
               >
-                <Button size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10 hover:border-white px-8">
+                <Button size="lg" variant="outline"
+                  className="border-white/50 text-white hover:bg-white/15 hover:border-white backdrop-blur-sm px-8">
                   WhatsApp Order
                 </Button>
               </a>
             )}
           </div>
         </div>
+
+        {/* Scroll hint */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/50 text-xs z-10 animate-bounce">
+          <span>scroll</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M12 5v14M5 12l7 7 7-7"/>
+          </svg>
+        </div>
       </section>
 
       {/* Perks bar */}
-      <section className="bg-white border-b">
+      <section className="bg-white border-b border-gray-100">
         <div className="container mx-auto max-w-5xl px-4 py-10 grid grid-cols-1 sm:grid-cols-3 gap-8">
           {PERKS.map(({ icon: Icon, label, desc }) => (
             <div key={label} className="flex items-start gap-4">
@@ -149,10 +155,8 @@ export function HomePage() {
               </div>
               <p className="text-gray-600 mb-6 leading-relaxed">{settings?.address}</p>
               {settings?.whatsappNumber && (
-                <a
-                  href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}`}
-                  target="_blank" rel="noreferrer"
-                >
+                <a href={`https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}`}
+                  target="_blank" rel="noreferrer">
                   <Button variant="primary" className="w-full gap-2">
                     <MessageCircle className="w-4 h-4" />
                     Order via WhatsApp
