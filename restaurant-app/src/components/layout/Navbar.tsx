@@ -97,7 +97,7 @@ export function Navbar() {
         style={{ pointerEvents: mobileOpen ? "auto" : "none" }}
       >
         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-        <div className={cn("relative z-10 flex flex-col h-full bg-[#FEFDF9] mobile-panel ml-auto w-full max-w-xs shadow-2xl", mobileOpen && "open")}>
+        <div className={cn("relative z-10 flex flex-col h-full bg-[#FEFDF9] mobile-panel w-full shadow-2xl", mobileOpen && "open")}>
           <div className="flex items-center justify-between px-5 h-16 border-b border-gray-100">
             <span className="font-serif text-2xl font-bold text-primary">{SITE_NAME}</span>
             <button onClick={() => setMobileOpen(false)} className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
