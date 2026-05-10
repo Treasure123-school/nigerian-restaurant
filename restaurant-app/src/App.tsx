@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { PageWrapper } from "./components/layout/PageWrapper"
 import { CartDrawer } from "./components/cart/CartDrawer"
 import { AppRoutes } from "./routes/AppRoutes"
+import { ScrollToTop } from "./components/ScrollToTop"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,6 +18,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <ScrollToTop />
         <PageWrapper>
           <AppRoutes />
           <CartDrawer />
