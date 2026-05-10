@@ -61,7 +61,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 export function HomePage() {
-  const { data: fetchedSettings, isLoading: isSettingsLoading } = useQuery<SiteSettings>({
+  const { data: fetchedSettings } = useQuery<SiteSettings>({
     queryKey: ["siteSettings"],
     queryFn: async () => {
       if (!isSanityConfigured()) return DEMO_SETTINGS
