@@ -2,7 +2,7 @@ import { MenuItem } from "../../types"
 import { MenuCard } from "./MenuCard"
 import { Spinner } from "../ui/Spinner"
 
-export function MenuGrid({ items, isLoading }: { items: MenuItem[], isLoading: boolean }) {
+export function MenuGrid({ items, isLoading, maxCols = 3 }: { items: MenuItem[], isLoading: boolean, maxCols?: 3 | 4 }) {
   if (isLoading) {
     return <Spinner />
   }
@@ -16,8 +16,12 @@ export function MenuGrid({ items, isLoading }: { items: MenuItem[], isLoading: b
     )
   }
 
+  const gridClass = maxCols === 4
+    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+    : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className={gridClass}>
       {items.map(item => (
         <MenuCard key={item._id} item={item} />
       ))}

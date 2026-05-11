@@ -28,7 +28,7 @@ export const MENU_ITEMS_BY_CATEGORY = `*[_type == "menuItem" && isAvailable == t
   tags
 }`
 
-export const FEATURED_ITEMS = `*[_type == "menuItem" && isAvailable == true && isFeatured == true]{
+export const FEATURED_ITEMS = `*[_type == "menuItem" && isAvailable == true] | order(isFeatured desc, _createdAt asc) [0...4]{
   _id,
   name,
   slug,
