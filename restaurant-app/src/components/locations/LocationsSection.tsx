@@ -199,7 +199,7 @@ export function LocationsSection() {
                     </div>
                   )}
 
-                  <div className="space-y-2 text-xs text-gray-400 flex-1">
+                  <div className="space-y-2 text-xs text-gray-600 flex-1">
                     <div className="flex gap-2">
                       <MapPin className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
                       <span className="leading-relaxed">{branch.address}</span>
