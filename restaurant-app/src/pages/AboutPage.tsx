@@ -267,7 +267,7 @@ export function AboutPage() {
                 </div>
                 <div className="md:w-1/2" />
                 {/* Mobile layout */}
-                <div className="sm:hidden flex gap-4">
+                <div className="md:hidden flex gap-4">
                   <div className="flex flex-col items-center">
                     <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/30 flex-shrink-0">
                       <span className="text-white text-xs font-bold">{m.year.slice(2)}</span>
