@@ -5,10 +5,14 @@ import { useCheckout } from "../features/checkout/useCheckout"
 import { CartSummary } from "../components/cart/CartSummary"
 import { Input } from "../components/ui/Input"
 import { Button } from "../components/ui/Button"
+import { PhoneInput } from "../components/ui/PhoneInput"
 import { ArrowLeft, X, ShieldCheck } from "lucide-react"
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const PHONE_REGEX = /^[+]?[\d\s\-()]{7,20}$/
+
+function getDigitsOnly(value: string) {
+  return value.replace(/\D/g, "")
+}
 
 export function CheckoutPage() {
   const { items, getTotalPrice } = useCartStore()
@@ -18,6 +22,7 @@ export function CheckoutPage() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    dialCode: "+234",
     phoneNumber: "",
     address: "",
     notes: "",
@@ -43,6 +48,21 @@ export function CheckoutPage() {
     if (error) clearError()
   }
 
+  const handleDialCodeChange = (dialCode: string) => {
+    setFormData((prev) => ({ ...prev, dialCode }))
+    if (validationErrors.phoneNumber) {
+      setValidationErrors((prev) => ({ ...prev, phoneNumber: "" }))
+    }
+  }
+
+  const handlePhoneNumberChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, phoneNumber: value }))
+    if (validationErrors.phoneNumber) {
+      setValidationErrors((prev) => ({ ...prev, phoneNumber: "" }))
+    }
+    if (error) clearError()
+  }
+
   const validate = () => {
     const errors: Record<string, string> = {}
 
@@ -58,10 +78,13 @@ export function CheckoutPage() {
       errors.email = "Please enter a valid email address"
     }
 
+    const digits = getDigitsOnly(formData.phoneNumber)
     if (!formData.phoneNumber.trim()) {
       errors.phoneNumber = "Phone number is required"
-    } else if (!PHONE_REGEX.test(formData.phoneNumber.trim())) {
-      errors.phoneNumber = "Please enter a valid phone number"
+    } else if (digits.length < 6) {
+      errors.phoneNumber = "Phone number is too short"
+    } else if (digits.length > 15) {
+      errors.phoneNumber = "Phone number is too long"
     }
 
     if (!formData.address.trim()) {
@@ -77,10 +100,11 @@ export function CheckoutPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (validate()) {
+      const fullPhone = `${formData.dialCode}${formData.phoneNumber.trim()}`
       processPayment(
         formData.fullName.trim(),
         formData.email.trim(),
-        formData.phoneNumber.trim(),
+        fullPhone,
         formData.address.trim(),
         formData.notes.trim()
       )
@@ -124,15 +148,12 @@ export function CheckoutPage() {
             />
           </div>
 
-          <Input
-            label="Phone Number"
-            name="phoneNumber"
-            type="tel"
-            value={formData.phoneNumber}
-            onChange={handleInputChange}
+          <PhoneInput
+            dialCode={formData.dialCode}
+            phoneNumber={formData.phoneNumber}
+            onDialCodeChange={handleDialCodeChange}
+            onPhoneNumberChange={handlePhoneNumberChange}
             error={validationErrors.phoneNumber}
-            placeholder="+234 800 000 0000"
-            autoComplete="tel"
           />
 
           <div className="flex flex-col gap-1 w-full">
