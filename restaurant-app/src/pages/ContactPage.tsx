@@ -191,33 +191,30 @@ export function ContactPage() {
             </div>
           </div>
 
-          {/* ── Social ── */}
-          {Object.values(s.socialLinks || {}).some(Boolean) && (
-            <div ref={socialRef} className="reveal text-center space-y-5">
-              <p className="text-xs text-gray-400 uppercase tracking-[0.2em] font-semibold">Follow Us</p>
-              <div className="flex flex-wrap justify-center gap-3">
-                {[
-                  { key: "instagram", label: "Instagram", icon: <Instagram className="w-4 h-4" /> },
-                  { key: "facebook",  label: "Facebook",  icon: <Facebook  className="w-4 h-4" /> },
-                  { key: "twitter",   label: "Twitter",   icon: <Twitter   className="w-4 h-4" /> },
-                ].map(({ key, label, icon }) => {
-                  const href = s.socialLinks?.[key as keyof typeof s.socialLinks]
-                  if (!href) return null
-                  return (
-                    <a
-                      key={key}
-                      href={href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 text-sm text-gray-600 hover:border-primary hover:text-primary transition-colors"
-                    >
-                      {icon} {label}
-                    </a>
-                  )
-                })}
-              </div>
+          {/* ── Social — always visible; links to # until URL added in Sanity ── */}
+          <div ref={socialRef} className="reveal text-center space-y-5">
+            <p className="text-xs text-gray-400 uppercase tracking-[0.2em] font-semibold">Follow Us</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {[
+                { key: "instagram", label: "Instagram", icon: <Instagram className="w-4 h-4" /> },
+                { key: "facebook",  label: "Facebook",  icon: <Facebook  className="w-4 h-4" /> },
+                { key: "twitter",   label: "Twitter",   icon: <Twitter   className="w-4 h-4" /> },
+              ].map(({ key, label, icon }) => {
+                const href = s.socialLinks?.[key as keyof typeof s.socialLinks] || "#"
+                return (
+                  <a
+                    key={key}
+                    href={href}
+                    target={href === "#" ? undefined : "_blank"}
+                    rel="noreferrer"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 text-sm text-gray-600 hover:border-primary hover:text-primary transition-colors"
+                  >
+                    {icon} {label}
+                  </a>
+                )
+              })}
             </div>
-          )}
+          </div>
 
         </div>
       </div>

@@ -128,9 +128,9 @@ export const DEMO_SETTINGS: SiteSettings = {
   heroHeadline: 'Authentic Nigerian Cuisine',
   heroSubtext: 'Experience the rich and vibrant flavours of Nigeria, made fresh daily with traditional recipes passed down through generations.',
   heroImage: { _type: 'image', asset: { _ref: '', _type: 'reference' } },
-  phoneNumber: '+234 800 000 0000',
+  phoneNumber: '09133301264',
   email: 'hello@iyabeji.com',
-  whatsappNumber: '+2348000000000',
+  whatsappNumber: '+2349133301264',
   address: '12 Adeola Odeku Street, Victoria Island, Lagos, Nigeria',
   openingHours: 'Monday – Friday: 11AM – 10PM\nSaturday – Sunday: 10AM – 11PM',
   socialLinks: {

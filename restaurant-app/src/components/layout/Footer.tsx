@@ -25,10 +25,6 @@ export function Footer({ settings }: { settings?: SiteSettings | null }) {
   const tagline = settings.tagline ||
     "Authentic Nigerian cuisine, made fresh daily with traditional recipes passed down through generations."
 
-  const activeSocials = SOCIAL_DEFS.filter(
-    ({ key }) => !!settings.socialLinks?.[key as keyof typeof settings.socialLinks]
-  )
-
   return (
     <footer className="bg-[#0f2318] text-white">
       <div className="container mx-auto px-6 pt-16 pb-8 max-w-6xl">
@@ -47,26 +43,27 @@ export function Footer({ settings }: { settings?: SiteSettings | null }) {
               </p>
             </div>
 
-            {/* Social icons — only shown when at least one link is set */}
-            {activeSocials.length > 0 && (
-              <div>
-                <p className="text-[10px] text-white/25 uppercase tracking-[0.2em] font-semibold mb-3">Follow Us</p>
-                <div className="flex items-center gap-2">
-                  {activeSocials.map(({ key, label, Icon }) => (
+            {/* Social icons — always visible; links to # until URL added in Sanity */}
+            <div>
+              <p className="text-[10px] text-white/25 uppercase tracking-[0.2em] font-semibold mb-3">Follow Us</p>
+              <div className="flex items-center gap-2">
+                {SOCIAL_DEFS.map(({ key, label, Icon }) => {
+                  const href = settings.socialLinks?.[key as keyof typeof settings.socialLinks] || "#"
+                  return (
                     <a
                       key={key}
-                      href={settings.socialLinks![key as keyof typeof settings.socialLinks]!}
-                      target="_blank"
+                      href={href}
+                      target={href === "#" ? undefined : "_blank"}
                       rel="noreferrer"
                       aria-label={label}
                       className="w-9 h-9 rounded-xl bg-white/[0.07] flex items-center justify-center hover:bg-white/[0.14] hover:text-white text-white/45 transition-all duration-200"
                     >
                       <Icon className="w-4 h-4" />
                     </a>
-                  ))}
-                </div>
+                  )
+                })}
               </div>
-            )}
+            </div>
           </div>
 
           {/* ── Visit Us ── */}
