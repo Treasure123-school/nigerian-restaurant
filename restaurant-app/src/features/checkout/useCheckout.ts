@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useCartStore } from "../cart/cartStore"
 import { useNavigate } from "react-router-dom"
+import { CartItem } from "../../types"
 
 const generateRef = () => {
   const timestamp = Date.now().toString(36)
@@ -12,8 +13,28 @@ const isPaystackLoaded = (): boolean => {
   return typeof (window as any).PaystackPop !== "undefined"
 }
 
+export interface SavedOrder {
+  reference: string
+  fullName: string
+  email: string
+  phoneNumber: string
+  address: string
+  notes: string
+  items: CartItem[]
+  total: number
+  paidAt: string
+}
+
+function saveOrderToStorage(order: SavedOrder) {
+  try {
+    const existing = JSON.parse(localStorage.getItem("iyb_orders") || "[]")
+    existing.unshift(order)
+    localStorage.setItem("iyb_orders", JSON.stringify(existing.slice(0, 20)))
+  } catch {}
+}
+
 export function useCheckout() {
-  const { getTotalPrice, clearCart } = useCartStore()
+  const { getTotalPrice, clearCart, items } = useCartStore()
   const navigate = useNavigate()
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -42,8 +63,11 @@ export function useCheckout() {
 
     setIsProcessing(true)
 
+    const cartSnapshot: CartItem[] = items.map(i => ({ ...i }))
+    const totalAtCheckout = getTotalPrice()
+
     try {
-      const amountInKobo = Math.round(getTotalPrice() * 100)
+      const amountInKobo = Math.round(totalAtCheckout * 100)
 
       const handler = (window as any).PaystackPop.setup({
         key,
@@ -53,25 +77,29 @@ export function useCheckout() {
         ref: generateRef(),
         metadata: {
           custom_fields: [
-            { display_name: "Full Name", variable_name: "full_name", value: fullName },
-            { display_name: "Phone Number", variable_name: "phone_number", value: phoneNumber },
+            { display_name: "Full Name",        variable_name: "full_name",        value: fullName },
+            { display_name: "Phone Number",     variable_name: "phone_number",     value: phoneNumber },
             { display_name: "Delivery Address", variable_name: "delivery_address", value: address },
-            { display_name: "Order Notes", variable_name: "order_notes", value: notes || "None" },
+            { display_name: "Order Notes",      variable_name: "order_notes",      value: notes || "None" },
           ],
         },
         callback: function (response: any) {
           setIsProcessing(false)
           if (response.status === "success") {
+            const order: SavedOrder = {
+              reference: response.reference,
+              fullName,
+              email,
+              phoneNumber,
+              address,
+              notes,
+              items: cartSnapshot,
+              total: totalAtCheckout,
+              paidAt: new Date().toISOString(),
+            }
+            saveOrderToStorage(order)
             clearCart()
-            navigate("/order-confirmation", {
-              state: {
-                reference: response.reference,
-                address,
-                notes,
-                phoneNumber,
-                fullName,
-              },
-            })
+            navigate("/order-confirmation", { state: order })
           } else {
             setError("Payment was not completed. Please try again.")
           }
