@@ -21,7 +21,7 @@ function formatOrderDate(iso: string) {
   }
 }
 
-function buildAdminWhatsAppMessage(order: SavedOrder, restaurantName: string): string {
+function buildAdminWhatsAppMessage(order: SavedOrder, _restaurantName: string): string {
   const itemLines = order.items
     .map(i => {
       const price = i.isExtraPortion && i.menuItem.extraPortionPrice
