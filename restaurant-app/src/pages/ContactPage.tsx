@@ -32,6 +32,8 @@ export function ContactPage() {
     address:        raw?.address        || DEMO_SETTINGS.address,
     openingHours:   raw?.openingHours   || DEMO_SETTINGS.openingHours,
     whatsappNumber: raw?.whatsappNumber || DEMO_SETTINGS.whatsappNumber,
+    phoneNumber:    raw?.phoneNumber    || DEMO_SETTINGS.phoneNumber || raw?.whatsappNumber || DEMO_SETTINGS.whatsappNumber,
+    email:          raw?.email          || DEMO_SETTINGS.email,
     socialLinks:    raw?.socialLinks    || {},
   }
 
@@ -131,10 +133,10 @@ export function ContactPage() {
                 <div>
                   <h2 className="font-bold text-gray-900 mb-1">Phone</h2>
                   <a
-                    href={`tel:${s.whatsappNumber}`}
+                    href={`tel:${s.phoneNumber}`}
                     className="text-gray-500 text-sm hover:text-primary transition-colors"
                   >
-                    {s.whatsappNumber}
+                    {s.phoneNumber}
                   </a>
                 </div>
                 <div>
@@ -143,10 +145,10 @@ export function ContactPage() {
                     <h2 className="font-bold text-gray-900">Email</h2>
                   </div>
                   <a
-                    href="mailto:hello@iyabeji.com"
+                    href={`mailto:${s.email}`}
                     className="text-gray-500 text-sm hover:text-primary transition-colors"
                   >
-                    hello@iyabeji.com
+                    {s.email}
                   </a>
                 </div>
               </div>
@@ -190,35 +192,32 @@ export function ContactPage() {
           </div>
 
           {/* ── Social ── */}
-          <div ref={socialRef} className="reveal text-center space-y-5">
-            <p className="text-xs text-gray-400 uppercase tracking-[0.2em] font-semibold">Follow Us</p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <a
-                href={s.socialLinks?.instagram || "https://instagram.com"}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 text-sm text-gray-600 hover:border-primary hover:text-primary transition-colors"
-              >
-                <Instagram className="w-4 h-4" /> Instagram
-              </a>
-              <a
-                href={s.socialLinks?.facebook || "https://facebook.com"}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 text-sm text-gray-600 hover:border-primary hover:text-primary transition-colors"
-              >
-                <Facebook className="w-4 h-4" /> Facebook
-              </a>
-              <a
-                href={s.socialLinks?.twitter || "https://twitter.com"}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 text-sm text-gray-600 hover:border-primary hover:text-primary transition-colors"
-              >
-                <Twitter className="w-4 h-4" /> Twitter
-              </a>
+          {Object.values(s.socialLinks || {}).some(Boolean) && (
+            <div ref={socialRef} className="reveal text-center space-y-5">
+              <p className="text-xs text-gray-400 uppercase tracking-[0.2em] font-semibold">Follow Us</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                {[
+                  { key: "instagram", label: "Instagram", icon: <Instagram className="w-4 h-4" /> },
+                  { key: "facebook",  label: "Facebook",  icon: <Facebook  className="w-4 h-4" /> },
+                  { key: "twitter",   label: "Twitter",   icon: <Twitter   className="w-4 h-4" /> },
+                ].map(({ key, label, icon }) => {
+                  const href = s.socialLinks?.[key as keyof typeof s.socialLinks]
+                  if (!href) return null
+                  return (
+                    <a
+                      key={key}
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 text-sm text-gray-600 hover:border-primary hover:text-primary transition-colors"
+                    >
+                      {icon} {label}
+                    </a>
+                  )
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
         </div>
       </div>

@@ -75,8 +75,9 @@ export function OrderConfirmationPage() {
     },
   })
 
-  const waNumber = (settings?.whatsappNumber || DEMO_SETTINGS.whatsappNumber).replace(/[^0-9]/g, "")
-  const restaurantName = settings?.restaurantName || DEMO_SETTINGS.restaurantName
+  const raw = settings ?? DEMO_SETTINGS
+  const waNumber       = (raw?.whatsappNumber || DEMO_SETTINGS.whatsappNumber).replace(/[^0-9]/g, "")
+  const restaurantName = raw?.restaurantName  || DEMO_SETTINGS.restaurantName
 
   useEffect(() => {
     if (order) {

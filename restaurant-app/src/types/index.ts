@@ -49,9 +49,12 @@ export interface CartState {
 
 export interface SiteSettings {
   restaurantName: string
+  tagline?: string
   heroHeadline: string
   heroSubtext: string
   heroImage: SanityImage
+  phoneNumber?: string
+  email?: string
   whatsappNumber: string
   address: string
   openingHours: string
@@ -59,5 +62,7 @@ export interface SiteSettings {
     instagram?: string
     facebook?: string
     twitter?: string
+    tiktok?: string
+    youtube?: string
   }
 }

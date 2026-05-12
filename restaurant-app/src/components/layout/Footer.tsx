@@ -11,24 +11,23 @@ function TikTokIcon({ className }: { className?: string }) {
   )
 }
 
-const SOCIAL_LINKS = [
-  { key: "instagram", label: "Instagram", Icon: Instagram,   href: "#" },
-  { key: "facebook",  label: "Facebook",  Icon: Facebook,    href: "#" },
-  { key: "tiktok",    label: "TikTok",    Icon: TikTokIcon,  href: "#" },
-  { key: "youtube",   label: "YouTube",   Icon: Youtube,     href: "#" },
-  { key: "twitter",   label: "Twitter",   Icon: Twitter,     href: "#" },
+const SOCIAL_DEFS = [
+  { key: "instagram", label: "Instagram", Icon: Instagram  },
+  { key: "facebook",  label: "Facebook",  Icon: Facebook   },
+  { key: "tiktok",    label: "TikTok",    Icon: TikTokIcon },
+  { key: "youtube",   label: "YouTube",   Icon: Youtube    },
+  { key: "twitter",   label: "Twitter",   Icon: Twitter    },
 ]
 
 export function Footer({ settings }: { settings?: SiteSettings | null }) {
   if (!settings) return null
 
-  const socialHrefs: Record<string, string> = {
-    instagram: settings.socialLinks?.instagram || "#",
-    facebook:  settings.socialLinks?.facebook  || "#",
-    twitter:   settings.socialLinks?.twitter   || "#",
-    tiktok:    "#",
-    youtube:   "#",
-  }
+  const tagline = settings.tagline ||
+    "Authentic Nigerian cuisine, made fresh daily with traditional recipes passed down through generations."
+
+  const activeSocials = SOCIAL_DEFS.filter(
+    ({ key }) => !!settings.socialLinks?.[key as keyof typeof settings.socialLinks]
+  )
 
   return (
     <footer className="bg-[#0f2318] text-white">
@@ -44,28 +43,30 @@ export function Footer({ settings }: { settings?: SiteSettings | null }) {
                 {settings.restaurantName || SITE_NAME}
               </h3>
               <p className="text-white/35 text-sm leading-relaxed mt-3 font-light max-w-[260px]">
-                Authentic Nigerian cuisine, made fresh daily with traditional recipes passed down through generations.
+                {tagline}
               </p>
             </div>
 
-            {/* Social icons */}
-            <div>
-              <p className="text-[10px] text-white/25 uppercase tracking-[0.2em] font-semibold mb-3">Follow Us</p>
-              <div className="flex items-center gap-2">
-                {SOCIAL_LINKS.map(({ key, label, Icon, href }) => (
-                  <a
-                    key={key}
-                    href={socialHrefs[key] || href}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={label}
-                    className="w-9 h-9 rounded-xl bg-white/[0.07] flex items-center justify-center hover:bg-white/[0.14] hover:text-white text-white/45 transition-all duration-200"
-                  >
-                    <Icon className="w-4 h-4" />
-                  </a>
-                ))}
+            {/* Social icons — only shown when at least one link is set */}
+            {activeSocials.length > 0 && (
+              <div>
+                <p className="text-[10px] text-white/25 uppercase tracking-[0.2em] font-semibold mb-3">Follow Us</p>
+                <div className="flex items-center gap-2">
+                  {activeSocials.map(({ key, label, Icon }) => (
+                    <a
+                      key={key}
+                      href={settings.socialLinks![key as keyof typeof settings.socialLinks]!}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={label}
+                      className="w-9 h-9 rounded-xl bg-white/[0.07] flex items-center justify-center hover:bg-white/[0.14] hover:text-white text-white/45 transition-all duration-200"
+                    >
+                      <Icon className="w-4 h-4" />
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* ── Visit Us ── */}
