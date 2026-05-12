@@ -77,9 +77,23 @@ export function useCheckout() {
         ref: generateRef(),
         metadata: {
           custom_fields: [
-            { display_name: "Full Name",        variable_name: "full_name",        value: fullName },
+            { display_name: "Customer Name",    variable_name: "full_name",        value: fullName },
             { display_name: "Phone Number",     variable_name: "phone_number",     value: phoneNumber },
             { display_name: "Delivery Address", variable_name: "delivery_address", value: address },
+            {
+              display_name: "Items Ordered",
+              variable_name: "items_ordered",
+              value: cartSnapshot
+                .map(i => {
+                  const price = i.isExtraPortion && i.menuItem.extraPortionPrice
+                    ? i.menuItem.extraPortionPrice
+                    : i.menuItem.price
+                  const label = i.isExtraPortion ? `${i.menuItem.name} (Extra)` : i.menuItem.name
+                  return `${i.quantity}x ${label} = ₦${(price * i.quantity).toLocaleString()}`
+                })
+                .join(" | "),
+            },
+            { display_name: "Order Total",      variable_name: "order_total",      value: `₦${totalAtCheckout.toLocaleString()}` },
             { display_name: "Order Notes",      variable_name: "order_notes",      value: notes || "None" },
           ],
         },
