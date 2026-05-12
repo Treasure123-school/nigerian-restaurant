@@ -5,7 +5,7 @@ export function CartSummary() {
   const { items, getTotalPrice } = useCartStore()
 
   return (
-    <div className="bg-gray-50 rounded-xl p-5 border border-gray-100 sticky top-24">
+    <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
       <h3 className="font-bold text-lg mb-4 border-b pb-4">Order Summary</h3>
       <div className="space-y-4 mb-6 max-h-[40vh] overflow-y-auto hide-scrollbar">
         {items.map((item) => {

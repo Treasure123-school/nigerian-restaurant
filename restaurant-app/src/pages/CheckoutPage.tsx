@@ -192,7 +192,7 @@ export function CheckoutPage() {
           </div>
         </div>
 
-        <div className="lg:col-span-1 space-y-4">
+        <div className="lg:col-span-1 space-y-4 sticky top-24 self-start">
           <CartSummary />
 
           {error && (
